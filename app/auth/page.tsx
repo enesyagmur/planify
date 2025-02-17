@@ -1,7 +1,6 @@
 "use client";
 
-import Login from "@/components/auth/login";
-
+import Login from "@/components/authComponents/login";
 import React from "react";
 
 const Auth = () => {
