@@ -1,15 +1,16 @@
 "use client";
 
-import React, { Dispatch, SetStateAction } from "react";
+import { auth } from "@/lib/firebase";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 interface Task {
-  id: string;
-  name: string;
-  icon: string;
-  creatorUserId: string;
-  type: string;
-  amount: number;
-  often: number;
+  id?: string;
+  name?: string;
+  creatorUserId?: string;
+  type?: string;
+  amount?: number;
+  often?: number;
 }
 
 interface NewTaskInputProps {
@@ -18,13 +19,27 @@ interface NewTaskInputProps {
 }
 
 const NewTaskInput = ({ newTask, setNewTask }: NewTaskInputProps) => {
+  useEffect(() => {
+    setNewTask({
+      ...newTask,
+      id: uuidv4(),
+      creatorUserId: auth.currentUser?.uid,
+    });
+  }, []);
+
   return (
     <div className="w-full h-40 flex flex-col items-start justify-evenly  p-4">
       <input
         type="text"
         placeholder="Görev adı"
         className="w-11/12 h-[30px] bg-neutral-700 rounded-sm capitalize pl-2"
-        value={newTask?.name}
+        value={newTask?.name || ""}
+        onChange={(e) =>
+          setNewTask((prevTask) => ({
+            ...prevTask,
+            name: e.target.value,
+          }))
+        }
       />
 
       <div className="w-11/12 h-[30px] flex items-center justify-between">
@@ -32,21 +47,31 @@ const NewTaskInput = ({ newTask, setNewTask }: NewTaskInputProps) => {
           <input
             type="text"
             placeholder=""
-            className="w-2/12 h-full bg-neutral-700 text-center rounded-sm"
-            value={newTask?.amount}
-            defaultValue={0}
+            className="w-3/12 h-full bg-neutral-700 text-center rounded-sm"
+            value={newTask?.amount || 0}
+            onChange={(e) =>
+              setNewTask((prevTask) => ({
+                ...prevTask,
+                amount: Number(e.target.value),
+              }))
+            }
           />
           <select
             name=""
             id=""
-            className="w-4/12 h-full bg-neutral-700 ml-4"
-            value={newTask?.type}
+            className="w-7/12 h-full bg-neutral-700 ml-4"
+            value={newTask?.type || ""}
+            onChange={(e) =>
+              setNewTask((prevTask) => ({
+                ...prevTask,
+                type: e.target.value,
+              }))
+            }
           >
-            <option
-              defaultValue={"Minute"}
-              value="Minute"
-              className="text-center"
-            >
+            <option value="" className="text-center">
+              Type Seçiniz
+            </option>
+            <option value="Minute" className="text-center">
               Dakika
             </option>
             <option className="text-center" value="Hour">
@@ -58,41 +83,43 @@ const NewTaskInput = ({ newTask, setNewTask }: NewTaskInputProps) => {
           </select>
         </div>
 
-        <div className="w-6/12 h-full flex items-center justify-start">
-          <select
-            name="often"
-            id="often"
-            className="w-3/12 h-full bg-neutral-700 overflow-auto"
-            value={newTask?.type}
-            defaultValue={1}
-          >
-            <option className="text-center" value="1">
-              Her
-            </option>
-            <option className="text-center" value="2">
-              2
-            </option>
-            <option className="text-center" value="3">
-              3
-            </option>
-            <option className="text-center" value="4">
-              4
-            </option>
-            <option className="text-center" value="5">
-              5
-            </option>
-            <option className="text-center" value="6">
-              6
-            </option>
-            <option className="text-center" value="7">
-              7
-            </option>
-          </select>
-
-          <label htmlFor="often" className="ml-4">
-            Günde Bir
-          </label>
-        </div>
+        <select
+          name="often"
+          id="often"
+          className="w-6/12 h-full bg-neutral-700 overflow-auto"
+          value={newTask?.often || 0}
+          onChange={(e) =>
+            setNewTask((prevTask) => ({
+              ...prevTask,
+              often: Number(e.target.value),
+            }))
+          }
+        >
+          <option className="text-center" value="0">
+            Sıklık Seçiniz
+          </option>
+          <option className="text-center" value="1">
+            Her Gün
+          </option>
+          <option className="text-center" value="2">
+            İki Günde Bir
+          </option>
+          <option className="text-center" value="3">
+            Üç Günde Bir
+          </option>
+          <option className="text-center" value="4">
+            Dört Günde Bir
+          </option>
+          <option className="text-center" value="5">
+            Beş Günde Bir
+          </option>
+          <option className="text-center" value="6">
+            Altı Günde Bir
+          </option>
+          <option className="text-center" value="7">
+            Yedi Günde Bir
+          </option>
+        </select>
       </div>
     </div>
   );

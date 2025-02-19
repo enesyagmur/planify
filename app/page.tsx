@@ -31,8 +31,6 @@ export default function Home() {
     return () => unSubscribe();
   }, [router]);
 
-  console.log(count);
-
   return (
     <div className="w-full flex flex-col">
       <Header />
