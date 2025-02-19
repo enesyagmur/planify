@@ -1,12 +1,12 @@
 import React from "react";
-import CreatePlan from "./CreatePlan";
+import CreateTask from "./CreateTask";
 
-const Plan = () => {
+const Tasks = () => {
   return (
     <div className="w-full min-h-[600px] flex flex-col items-center justify-center ">
-      <CreatePlan />
+      <CreateTask />
     </div>
   );
 };
 
-export default Plan;
+export default Tasks;

@@ -9,14 +9,14 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import "../styles/home.css";
 import Daily from "@/components/homeComponents/Daily";
-import Plan from "@/components/homeComponents/Plan";
+import Tasks from "@/components/homeComponents/Tasks";
 
 export default function Home() {
   const router = useRouter();
   const [count, setCount] = useState<number>(0);
   const componentArray: React.ComponentType[] = [
     Daily,
-    Plan,
+    Tasks,
     Dashboard,
     History,
   ];
