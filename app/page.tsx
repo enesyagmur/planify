@@ -1,23 +1,24 @@
 "use client";
 
-import Calender from "@/components/homeComponents/calender";
-import ChangeComponent from "@/components/homeComponents/changeComponent";
-import CreateDailyPlan from "@/components/homeComponents/createDailyPlan";
-import CurrentDailyPlan from "@/components/homeComponents/currentDailyPlan";
-import Dashboard from "@/components/homeComponents/dashboard";
-import Header from "@/components/homeComponents/header";
+import ChangeComponent from "@/components/homeComponents/ChangeComponent";
+import Dashboard from "@/components/homeComponents/Dashboard";
+import Header from "@/components/homeComponents/Header";
+import History from "@/components/homeComponents/History";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import "../styles/home.css";
+import Daily from "@/components/homeComponents/Daily";
+import Plan from "@/components/homeComponents/Plan";
 
 export default function Home() {
   const router = useRouter();
   const [count, setCount] = useState<number>(0);
   const componentArray: React.ComponentType[] = [
-    CurrentDailyPlan,
-    CreateDailyPlan,
+    Daily,
+    Plan,
     Dashboard,
-    Calender,
+    History,
   ];
 
   useEffect(() => {
@@ -30,12 +31,14 @@ export default function Home() {
     return () => unSubscribe();
   }, [router]);
 
+  console.log(count);
+
   return (
     <div className="w-full flex flex-col">
       <Header />
-      <div className="w-full flex flex-col border-[1px] rounded-md items-center justify-center p-4">
+      <div className="w-full min-h-[670px] flex flex-col border-[1px] border-neutral-600 rounded-md items-center justify-between p-4">
         <ChangeComponent count={count} setCount={setCount} />
-        <>{componentArray[count]}</>
+        {React.createElement(componentArray[count])}
       </div>
     </div>
   );
