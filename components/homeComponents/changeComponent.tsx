@@ -22,7 +22,7 @@ const ChangeComponent = ({ count, setCount }: ChangeComponentProps) => {
         }`}
         onClick={() => setCount(1)}
       >
-        Plan
+        Yeni
       </button>
       <button
         className={`change-component-button ${

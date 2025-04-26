@@ -1,7 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.change-component-button {
-  @apply w-28 h-full text-center hover:bg-customPink transition rounded-md;
-}

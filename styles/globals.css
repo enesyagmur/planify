@@ -2,20 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*Change Component*/
+.change-component-button {
+  @apply w-28 h-full text-center hover:bg-secondBackground transition rounded-md;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/*New Component*/
+.input-label {
+  @apply w-full h-6  text-secondTextColor;
+}
+.input {
+  @apply w-full h-7 rounded-sm pl-2;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.color-button {
+  @apply w-1/12 h-full rounded-sm hover:bg-opacity-70;
+}
+
+.weekly-button {
+  @apply w-7 h-7 flex items-center justify-center rounded-full border-[1px] border-secondBackground text-secondBackground hover:text-secondTextColor hover:border-secondTextColor;
+}
+.weekly-button-active {
+  @apply w-7 h-7 flex items-center justify-center rounded-full border-[1px] border-mainBlue text-mainBlue hover:text-secondTextColor hover:border-secondTextColor;
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NewTaskInput from "./NewTaskInput";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 interface Task {
   id?: string;
@@ -12,7 +13,7 @@ interface Task {
   often?: number;
 }
 
-const CreateTask = () => {
+const New = () => {
   const [newTask, setNewTask] = useState<Task | undefined>(undefined);
   const [taskState, setTaskState] = useState<boolean>(false);
 
@@ -42,19 +43,23 @@ const CreateTask = () => {
     }
   }, [newTask]);
 
-  return (
-    <div className="w-11/12 sm:w-10/12 md:w-8/12 lg:w-6/12 border-[1px] border-neutral-800 rounded-md">
-      <div className="w-full h-12 flex items-center justify-start pt-2">
-        <h1 className="ml-5 text-xl">Yeni Görev Oluştur</h1>
-      </div>
+  useEffect(() => {
+    setNewTask({
+      ...newTask,
+      id: uuidv4(),
+      creatorUserId: auth.currentUser?.uid,
+    });
+  }, []);
 
+  return (
+    <div className="w-11/12 min-h-[600px] flex flex-col items-center justify-center ">
       <NewTaskInput newTask={newTask} setNewTask={setNewTask} />
 
       <div className="w-full h-20 flex items-center justify-center">
         <button
           disabled={!taskState}
-          className={`w-4/12 p-1 rounded-md border-[1px] border-customPink opacity-50 cursor-none ${
-            taskState ? "bg-customPink opacity-100 cursor-pointer" : ""
+          className={`w-4/12 p-1 rounded-md border-[1px] border-customYellow opacity-50 cursor-none ${
+            taskState ? "bg-customYellow opacity-100 cursor-pointer" : ""
           }`}
           onClick={taskSendToDb}
         >
@@ -65,4 +70,4 @@ const CreateTask = () => {
   );
 };
 
-export default CreateTask;
+export default New;

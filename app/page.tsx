@@ -1,22 +1,21 @@
 "use client";
 
 import ChangeComponent from "@/components/homeComponents/ChangeComponent";
-import Dashboard from "@/components/homeComponents/Dashboard";
+import Dashboard from "@/components/homeComponents/dashboard/Dashboard";
 import Header from "@/components/homeComponents/Header";
-import History from "@/components/homeComponents/History";
+import History from "@/components/homeComponents/history/History";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import "../styles/home.css";
-import Daily from "@/components/homeComponents/Daily";
-import Tasks from "@/components/homeComponents/Tasks";
+import Daily from "@/components/homeComponents/daily/Daily";
+import New from "@/components/homeComponents/new/New";
 
 export default function Home() {
   const router = useRouter();
   const [count, setCount] = useState<number>(0);
   const componentArray: React.ComponentType[] = [
     Daily,
-    Tasks,
+    New,
     Dashboard,
     History,
   ];
