@@ -1,26 +1,42 @@
 "use client";
 
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const Login = () => {
   const router = useRouter();
 
-  const loginFunc = () => {
+  const loginFunc = async () => {
     const provider = new GoogleAuthProvider();
 
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        if (result) {
-          router.push("/");
-          console.log("Google ile giriş yapıldı.");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid); // kullanıcının adresi
+        const userSnap = await getDoc(userRef); // kullanıcıyı db den çekme
+
+        if (userSnap.exists() === false) {
+          // kullanıcı varsa true yoksa false
+          await setDoc(userRef, {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            tasks: {},
+            createdAt: new Date(),
+          });
+          console.log("Yeni kullanıcı kaydedildi.");
         }
-      })
-      .catch((err) => {
-        console.log("Google ile girişte hata: ", err);
-      });
+        router.push("/");
+        console.log("Google ile giriş yapıldı.");
+      }
+    } catch (err) {
+      console.log("Google ile girişte hata: ", err);
+    }
   };
 
   return (

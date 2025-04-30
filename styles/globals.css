@@ -12,16 +12,16 @@
   @apply w-full h-6  text-secondTextColor;
 }
 .input {
-  @apply w-full h-7 rounded-sm pl-2;
+  @apply w-full h-7 rounded-sm pl-2 capitalize;
 }
 
 .color-button {
-  @apply w-1/12 h-full rounded-sm hover:bg-opacity-70;
+  @apply w-1/12 h-full rounded-sm hover:bg-opacity-70 cursor-pointer;
 }
 
 .weekly-button {
-  @apply w-7 h-7 flex items-center justify-center rounded-full border-[1px] border-secondBackground text-secondBackground hover:text-secondTextColor hover:border-secondTextColor;
+  @apply w-8 h-7 text-sm flex items-center justify-center rounded-full border-[1px] border-secondTextColor text-secondTextColor hover:text-darkGreen hover:border-darkGreen;
 }
 .weekly-button-active {
-  @apply w-7 h-7 flex items-center justify-center rounded-full border-[1px] border-mainBlue text-mainBlue hover:text-secondTextColor hover:border-secondTextColor;
+  @apply w-8 h-7 text-sm flex items-center justify-center rounded-full border-[1px] border-darkGreen text-mainGreen hover:text-secondTextColor hover:border-secondTextColor;
 }

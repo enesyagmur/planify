@@ -1,6 +1,6 @@
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { RxDropdownMenu } from "react-icons/rx";
 
 interface Icons {
@@ -8,12 +8,17 @@ interface Icons {
   icon: string;
 }
 
-const Icon = () => {
+interface IconProps {
+  setValue: Dispatch<SetStateAction<string>>;
+}
+
+const Icon = ({ setValue }: IconProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [iconList, setIconList] = useState<Icons[]>([]);
 
-  const handleClick = () => {
+  const handleClick = (icon: string) => {
     setOpen(false);
+    setValue(icon);
   };
 
   async function fetchIcons() {
@@ -36,11 +41,11 @@ const Icon = () => {
   if (open === false) {
     return (
       <div className="w-4/12 h-14 flex flex-col items-start justify-between text-white ml-2">
-        <label htmlFor="title" className="input-label">
+        <label htmlFor="title" className="input-label ">
           ikon
         </label>
         <button
-          className="w-full h-8 flex items-center justify-center bg-secondBackground rounded-sm text-2xl text-mainTextColor hover:bg-darkGreen hover:text-mainBackground"
+          className="w-full h-7 flex items-center justify-center bg-secondBackground rounded-sm text-2xl text-mainTextColor hover:bg-darkGreen hover:text-mainBackground"
           onClick={fetchIcons}
         >
           <RxDropdownMenu />
@@ -54,7 +59,7 @@ const Icon = () => {
           <button
             className="w-8 h-8 rounded-sm m-2 text-2xl flex items-center justify-center hover:bg-darkGreen"
             key={item.id}
-            onClick={handleClick}
+            onClick={() => handleClick(item.icon)}
           >
             {item.icon}
           </button>

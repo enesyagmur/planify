@@ -6,6 +6,19 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "bg-lime-400",
+    "bg-emerald-500",
+    "bg-amber-950",
+    "bg-orange-600",
+    "bg-amber-500",
+    "bg-fuchsia-500",
+    "bg-violet-500",
+    "bg-zinc-700",
+    "bg-red-600",
+    "bg-sky-500",
+    "bg-blue-500",
+  ],
   theme: {
     extend: {
       colors: {

@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const Repeat = () => {
+interface RepeatProps {
+  value: string;
+  setValue: Dispatch<SetStateAction<object>>;
+}
+
+const Repeat = ({ setValue }: RepeatProps) => {
   const [typeArray, setTypeArray] = useState<boolean[]>([true, false, false]);
   const [daysArray, setDaysArray] = useState<boolean[]>([
     false,
@@ -12,13 +17,32 @@ const Repeat = () => {
     false,
   ]);
 
-  const handleChange = (value: string) => {
-    if (value === "everyday") {
+  useEffect(() => {
+    if (typeArray[1] === true) {
+      setValue((prevValue) => ({
+        ...prevValue,
+        amount: daysArray,
+      }));
+    }
+  }, [daysArray]);
+
+  const handleChange = (input: string) => {
+    if (input === "everyday") {
       setTypeArray([true, false, false]);
-    } else if (value === "weekly") {
+      setValue(() => ({
+        oftenType: "everyday",
+        oftenAmount: 1,
+      }));
+    } else if (input === "weekly") {
       setTypeArray([false, true, false]);
+      setValue(() => ({
+        oftenType: "weekly",
+      }));
     } else {
       setTypeArray([false, false, true]);
+      setValue(() => ({
+        oftenType: "everyxdays",
+      }));
     }
   };
 
@@ -42,6 +66,7 @@ const Repeat = () => {
           className={`rounded-sm h-7 ${typeArray[0] ? "w-full" : "w-5/12 "}`}
           onChange={(e) => handleChange(e.target.value)}
         >
+          <option className="text-start text-black">----</option>
           <option value="everyday" className="text-start text-black">
             ☀️ Her Gün
           </option>
@@ -59,6 +84,12 @@ const Repeat = () => {
             name="title"
             className="w-6/12 pl-2 rounded-sm h-7"
             placeholder="Miktar"
+            onChange={(e) =>
+              setValue((prevValue) => ({
+                ...prevValue,
+                amount: e.target.value,
+              }))
+            }
           />
         ) : null}
 
@@ -70,7 +101,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(0)}
             >
-              P
+              Pz
             </button>
             <button
               className={`${
@@ -78,7 +109,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(1)}
             >
-              S
+              Pts
             </button>
             <button
               className={`${
@@ -86,7 +117,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(2)}
             >
-              Ç
+              Sl
             </button>
             <button
               className={`${
@@ -94,7 +125,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(3)}
             >
-              P
+              Çrş
             </button>
             <button
               className={`${
@@ -102,7 +133,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(4)}
             >
-              C
+              Prş
             </button>
             <button
               className={`${
@@ -110,7 +141,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(5)}
             >
-              C
+              Cm
             </button>
             <button
               className={`${
@@ -118,7 +149,7 @@ const Repeat = () => {
               }`}
               onClick={() => selectedDay(6)}
             >
-              P
+              Cts
             </button>
           </div>
         ) : null}

@@ -1,73 +1,81 @@
 import React, { useEffect, useState } from "react";
-import NewTaskInput from "./NewTaskInput";
-import { addDoc, collection } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
-import { v4 as uuidv4 } from "uuid";
+import SelectCategory from "./SelectCategory";
+import Title from "./Title";
+import Type from "./Type";
+import Color from "./Color";
+import Repeat from "./Repeat";
+import StartDate from "./StartDate";
+import Notification from "./Notification";
+import SendButton from "./SendButton";
 
 interface Task {
-  id?: string;
-  name?: string;
-  creatorUserId?: string;
-  type?: string;
-  amount?: number;
-  often?: number;
+  title: string;
+  category: string;
+  taskType: { type: string; amount: number };
+  often: { oftenType: string; oftenAmount: boolean[] | number };
+  color: string;
+  startDate: string[];
+  notification: boolean | number[];
 }
 
 const New = () => {
-  const [newTask, setNewTask] = useState<Task | undefined>(undefined);
-  const [taskState, setTaskState] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [taskType, setTaskType] = useState<{ type: string; amount: number }>({
+    type: "",
+    amount: 0,
+  });
+  const [often, setOften] = useState<{
+    oftenType: string;
+    oftenAmount: boolean[] | number;
+  }>({
+    oftenType: "",
+    oftenAmount: 0,
+  });
+  const [color, setColor] = useState<string>("");
+  const [startDate, setStartDate] = useState<string[]>([]);
+  const [notification, setNotification] = useState<boolean | number[]>(true);
 
-  const taskSendToDb = async () => {
-    try {
-      const docRef = await addDoc(collection(db, "tasks"), { ...newTask });
-      if (docRef.id) {
-        console.log("Task Kayıt Başarılı", docRef.id);
-      }
-    } catch (err) {
-      console.log("Task Kayıt Edilemedi", err);
-    }
-  };
-
-  useEffect(() => {
-    if (
-      newTask?.id !== undefined &&
-      newTask?.name !== undefined &&
-      newTask?.creatorUserId !== undefined &&
-      newTask?.type !== undefined &&
-      newTask?.amount !== undefined &&
-      newTask?.often !== undefined
-    ) {
-      setTaskState(true);
-    } else {
-      setTaskState(false);
-    }
-  }, [newTask]);
+  const [newTask, setNewTask] = useState<Task | undefined>({
+    title,
+    category,
+    taskType,
+    often,
+    color,
+    startDate,
+    notification,
+  });
 
   useEffect(() => {
     setNewTask({
-      ...newTask,
-      id: uuidv4(),
-      creatorUserId: auth.currentUser?.uid,
+      title,
+      category,
+      taskType,
+      often,
+      color,
+      startDate,
+      notification,
     });
-  }, []);
+  }, [title, category, taskType, often, color, startDate, notification]);
+
+  console.log(newTask);
 
   return (
-    <div className="w-11/12 min-h-[600px] flex flex-col items-center justify-center ">
-      <NewTaskInput newTask={newTask} setNewTask={setNewTask} />
-
-      <div className="w-full h-20 flex items-center justify-center">
-        <button
-          disabled={!taskState}
-          className={`w-4/12 p-1 rounded-md border-[1px] border-customYellow opacity-50 cursor-none ${
-            taskState ? "bg-customYellow opacity-100 cursor-pointer" : ""
-          }`}
-          onClick={taskSendToDb}
-        >
-          Kaydet
-        </button>
-      </div>
+    <div className="w-11/12 min-h-[600px] flex flex-col items-center justify-center text-mainBackground">
+      <div className="w-6/12 h-full flex flex-col items-center"></div>
+      <div></div>
+      <Title setValue={setTitle} value={title} />
+      <SelectCategory setValue={setCategory} value={category} />
+      <Type setValue={setTaskType} />
+      <Repeat setValue={setOften} />
+      <Color setValue={setColor} value={color} />
+      <StartDate setValue={setStartDate} value={startDate} />
+      <Notification setValue={setNotification} value={notification} />
+      <SendButton newTask={newTask} setNewTask={setNewTask} />
     </div>
   );
 };
 
 export default New;
+
+//durum componentlere gonderdiğimiz statlere gerekli değerleri dönme
