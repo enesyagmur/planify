@@ -6,7 +6,12 @@ interface RepeatProps {
 }
 
 const Repeat = ({ setValue }: RepeatProps) => {
-  const [typeArray, setTypeArray] = useState<boolean[]>([true, false, false]);
+  const [typeArray, setTypeArray] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [daysArray, setDaysArray] = useState<boolean[]>([
     false,
     false,
@@ -28,20 +33,25 @@ const Repeat = ({ setValue }: RepeatProps) => {
 
   const handleChange = (input: string) => {
     if (input === "everyday") {
-      setTypeArray([true, false, false]);
+      setTypeArray([true, false, false, false]);
       setValue(() => ({
         oftenType: "everyday",
         oftenAmount: 1,
       }));
     } else if (input === "weekly") {
-      setTypeArray([false, true, false]);
+      setTypeArray([false, true, false, false]);
       setValue(() => ({
         oftenType: "weekly",
       }));
-    } else {
-      setTypeArray([false, false, true]);
+    } else if (input === "loop") {
+      setTypeArray([false, false, true, false]);
       setValue(() => ({
         oftenType: "everyxdays",
+      }));
+    } else {
+      setTypeArray([false, false, false, true]);
+      setValue(() => ({
+        oftenType: "once",
       }));
     }
   };
@@ -63,18 +73,23 @@ const Repeat = ({ setValue }: RepeatProps) => {
         <select
           name=""
           id=""
-          className={`rounded-sm h-7 ${typeArray[0] ? "w-full" : "w-5/12 "}`}
+          className={`rounded-sm h-7 ${
+            typeArray[1] || typeArray[2] ? "w-5/12" : "w-full "
+          }`}
           onChange={(e) => handleChange(e.target.value)}
         >
-          <option className="text-start text-black">----</option>
-          <option value="everyday" className="text-start text-black">
-            ☀️ Her Gün
+          <option className="text-start ">----</option>
+          <option value="everyday" className="text-start ">
+            ♾️ Her Gün
           </option>
-          <option className="text-start" value="weekly">
+          <option className="text-start" value="weekly text-black">
             📆 Belirli Günler
           </option>
-          <option className="text-start" value="loop">
-            *️⃣ X Günde Bir Tekrar
+          <option className="text-start" value="loop text-black">
+            🛞 X Günde Bir Tekrar
+          </option>
+          <option className="text-start" value="once text-black">
+            📍 Tekrar Yok
           </option>
         </select>
 

@@ -25,6 +25,7 @@ const Title = ({ value, setValue }: TitleProps) => {
           className="input mt-2"
           onChange={(e) => setValue(e.target.value)}
           value={value}
+          placeholder="Görev İsmi"
         />
       </div>
       <Icon setValue={setIcon} />
