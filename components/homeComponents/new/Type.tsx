@@ -6,7 +6,7 @@ interface TypeProps {
 
 const Type = ({ setValue }: TypeProps) => {
   return (
-    <div className="w-11/12 h-14 flex flex-col items-start justify-between mt-4">
+    <div className="w-11/12 h-20 flex flex-col items-start justify-evenly">
       <label htmlFor="type" className="input-label">
         Görev Tipi
       </label>

@@ -14,15 +14,15 @@ const Title = ({ value, setValue }: TitleProps) => {
   }, [icon]);
 
   return (
-    <div className="w-11/12 h-14 flex items-center justify-between">
-      <div className="w-8/12 h-full flex-col items-start justify-between">
+    <div className="w-11/12 h-20 flex items-center justify-between">
+      <div className="w-8/12 h-20 flex-col items-start justify-between  pt-2">
         <label htmlFor="title" className="input-label">
           Başlık
         </label>
         <input
           type="text"
           name="title"
-          className="input mt-1"
+          className="input mt-2"
           onChange={(e) => setValue(e.target.value)}
           value={value}
         />

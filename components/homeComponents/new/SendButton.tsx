@@ -6,10 +6,10 @@ interface Task {
   title: string;
   category: string;
   taskType: { type: string; amount: number };
-  often: string | string[] | number;
+  often: { oftenType: string; oftenAmount: boolean[] | number };
   color: string;
   startDate: string[];
-  notification: boolean | number[];
+  notification: string;
 }
 
 interface SendButtonProps {
@@ -21,19 +21,38 @@ const SendButton = ({ newTask, setNewTask }: SendButtonProps) => {
   const [taskState, setTaskState] = useState<boolean>(false);
 
   const taskSendToDb = async () => {
-    // const taskRef = collection(db, `users/${auth.currentUser?.uid}/tasks`);
-    // try {
-    //     await addDoc(taskRef, {
-    //     })
-    // } catch (error) {
-    // }
+    if (newTask) {
+      const taskRef = collection(db, `users/${auth.currentUser?.uid}/tasks`);
+      try {
+        await addDoc(taskRef, {
+          title: newTask.title,
+          category: newTask.category,
+          Type: newTask.taskType,
+          often: newTask.often,
+          color: newTask.color,
+          startDate: newTask.startDate,
+          notification: newTask.notification,
+          completion: false,
+        });
+
+        console.log("Görev kayıt edildi");
+      } catch (err) {
+        console.error("Görev kayıt edilemed: ", err);
+      }
+    }
   };
 
   useEffect(() => {
     if (
-      newTask?.title !== undefined &&
-      newTask?.taskType !== undefined &&
-      newTask?.often !== undefined
+      newTask !== undefined &&
+      newTask.title !== "" &&
+      newTask.category !== "" &&
+      newTask.taskType.type !== "" &&
+      newTask.taskType.amount !== 0 &&
+      newTask.often.oftenType !== "" &&
+      newTask.often.oftenAmount !== 0 &&
+      newTask.color !== "" &&
+      newTask.startDate.length !== 0
     ) {
       setTaskState(true);
     } else {
@@ -42,11 +61,11 @@ const SendButton = ({ newTask, setNewTask }: SendButtonProps) => {
   }, [newTask]);
 
   return (
-    <div className="w-full h-20 flex items-center justify-center text-secondTextColor">
+    <div className="w-full h-20 flex items-end justify-center text-secondTextColor pb-2">
       <button
         disabled={!taskState}
-        className={`w-4/12 p-1 rounded-md border-[1px] border-customYellow opacity-50 cursor-not-allowed ${
-          taskState ? "bg-customYellow opacity-100 cursor-pointer" : ""
+        className={`w-11/12 p-1 rounded-md border-[1px] border-customYellow  cursor-not-allowed ${
+          taskState ? "bg-darkBlue cursor-pointer text-mainTextColor" : ""
         }`}
         onClick={taskSendToDb}
       >

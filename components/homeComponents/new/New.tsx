@@ -15,7 +15,7 @@ interface Task {
   often: { oftenType: string; oftenAmount: boolean[] | number };
   color: string;
   startDate: string[];
-  notification: boolean | number[];
+  notification: string;
 }
 
 const New = () => {
@@ -34,7 +34,7 @@ const New = () => {
   });
   const [color, setColor] = useState<string>("");
   const [startDate, setStartDate] = useState<string[]>([]);
-  const [notification, setNotification] = useState<boolean | number[]>(true);
+  const [notification, setNotification] = useState<string>("");
 
   const [newTask, setNewTask] = useState<Task | undefined>({
     title,
@@ -61,21 +61,21 @@ const New = () => {
   console.log(newTask);
 
   return (
-    <div className="w-11/12 min-h-[600px] flex flex-col items-center justify-center text-mainBackground">
-      <div className="w-6/12 h-full flex flex-col items-center"></div>
-      <div></div>
-      <Title setValue={setTitle} value={title} />
-      <SelectCategory setValue={setCategory} value={category} />
-      <Type setValue={setTaskType} />
-      <Repeat setValue={setOften} />
-      <Color setValue={setColor} value={color} />
-      <StartDate setValue={setStartDate} value={startDate} />
-      <Notification setValue={setNotification} value={notification} />
-      <SendButton newTask={newTask} setNewTask={setNewTask} />
+    <div className="w-11/12 min-h-[800px]  md:min-h-[600px] flex flex-col md:flex-row items-center justify-center text-mainBackground">
+      <div className="w-11/12 md:w-6/12 h-full flex flex-col items-center justify-between relative">
+        <Title setValue={setTitle} value={title} />
+        <SelectCategory setValue={setCategory} value={category} />
+        <Type setValue={setTaskType} />
+        <Repeat setValue={setOften} />
+      </div>
+      <div className="w-11/12 md:w-6/12 h-full flex flex-col items-center justify-between">
+        <Color setValue={setColor} value={color} />
+        <StartDate setValue={setStartDate} value={startDate} />
+        <Notification setValue={setNotification} value={notification} />
+        <SendButton newTask={newTask} setNewTask={setNewTask} />
+      </div>
     </div>
   );
 };
 
 export default New;
-
-//durum componentlere gonderdiğimiz statlere gerekli değerleri dönme

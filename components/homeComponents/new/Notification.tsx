@@ -1,32 +1,41 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface NotificationProps {
-  value: boolean | number[];
-  setValue: Dispatch<SetStateAction<number[] | boolean>>;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 const Notification = ({ value, setValue }: NotificationProps) => {
   const [selectCheck, setSelectCheck] = useState<boolean>(true);
+  const [hour, setHour] = useState<string>("");
+  const [minute, setMinute] = useState<string>("");
+
+  useEffect(() => {
+    if (selectCheck) {
+      if (hour !== "" && minute !== "") {
+        setValue(`${hour}.${minute}`);
+      }
+    } else {
+      setValue("");
+    }
+  }, [hour, minute, selectCheck]);
 
   return (
-    <div className="w-11/12 h-14 flex flex-col items-start justify-between mt-4">
+    <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">
       <label htmlFor="title" className="input-label">
         Bildirim
       </label>
 
-      <div className="w-full h-7 flex items-center justify-between ">
-        <input
-          type="checkbox"
+      <div className="w-full h-7 flex items-center justify-between text-xl">
+        <button
           name="notification"
           id=""
           className="w-5 h-7"
-          onClick={() => {
-            setSelectCheck(!selectCheck);
-            if (selectCheck === false) {
-              setValue(false);
-            }
-          }}
-        />
+          onClick={() => setSelectCheck(!selectCheck)}
+        >
+          {selectCheck ? "🔊" : "🔈"}
+        </button>
+
         {selectCheck ? (
           <div className="w-6/12 h-7 flex items-center justify-end">
             <input
@@ -34,22 +43,14 @@ const Notification = ({ value, setValue }: NotificationProps) => {
               name="hour"
               className="w-6/12 rounded-sm h-7 text-center"
               placeholder="Saat"
-              onChange={(e) => {
-                if (Array.isArray(value)) {
-                  setValue([Number(e.target.value), 0]);
-                }
-              }}
+              onChange={(e) => setHour(e.target.value)}
             />
             <input
               type="text"
               name="minute"
               className="w-6/12  rounded-sm h-7 text-center ml-1"
               placeholder="Dakika"
-              onChange={(e) => {
-                if (Array.isArray(value)) {
-                  setValue(() => [value[0], Number(e.target.value)]);
-                }
-              }}
+              onChange={(e) => setMinute(e.target.value)}
             />
           </div>
         ) : null}

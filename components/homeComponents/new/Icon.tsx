@@ -40,7 +40,7 @@ const Icon = ({ setValue }: IconProps) => {
 
   if (open === false) {
     return (
-      <div className="w-4/12 h-14 flex flex-col items-start justify-between text-white ml-2">
+      <div className="w-4/12 h-20 flex flex-col items-start justify-evenly text-white ml-2 ">
         <label htmlFor="title" className="input-label ">
           ikon
         </label>
@@ -54,7 +54,10 @@ const Icon = ({ setValue }: IconProps) => {
     );
   } else {
     return (
-      <div className="w-full h-full flex flex-wrap items-center justify-center absolute top-0 left-0 text-white bg-secondBackground rounded-md bg-opacity-95 z-10">
+      <div
+        className="w-full h-full flex flex-wrap items-center justify-center absolute top-0 left-0 text-white bg-secondBackground rounded-md bg-opacity-95 z-10"
+        onClick={() => setOpen(false)}
+      >
         {iconList.map((item) => (
           <button
             className="w-8 h-8 rounded-sm m-2 text-2xl flex items-center justify-center hover:bg-darkGreen"

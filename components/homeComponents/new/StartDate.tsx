@@ -43,7 +43,7 @@ const StartDate = ({ value, setValue }: StartDateProps) => {
   }, [customDate]);
 
   return (
-    <div className="w-11/12 h-14 flex flex-col items-start justify-between mt-4">
+    <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">
       <label htmlFor="title" className="input-label">
         Başlangıç Günü
       </label>

@@ -47,13 +47,12 @@ const Color = ({ value, setValue }: ColorProps) => {
   }, []);
 
   return (
-    <div className="w-11/12 h-14 flex flex-col items-start justify-between mt-2">
-      <div className="hidden"></div>
-      <label htmlFor="title" className="input-label">
+    <div className="w-11/12 h-20 flex flex-col items-start justify-center ">
+      <label htmlFor="title" className="input-label mb-1">
         Renk
       </label>
 
-      <div className="w-full flex items-center justify-between rounded-sm h-7">
+      <div className="w-full flex items-center justify-between rounded-sm h-7 mb-3">
         {colorList &&
           colorList.map((item) => (
             <button

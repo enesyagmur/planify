@@ -7,7 +7,7 @@ interface CategoryProps {
 
 const SelectCategory = ({ value, setValue }: CategoryProps) => {
   return (
-    <div className="w-11/12 h-14 flex flex-col items-start justify-between mt-2">
+    <div className="w-11/12 h-20 flex flex-col items-start justify-evenly">
       <label htmlFor="category" className="input-label">
         Kategori
       </label>
