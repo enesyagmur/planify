@@ -1,23 +1,14 @@
 import { auth, db } from "@/lib/firebase";
-import { addDoc, collection, getDoc } from "firebase/firestore";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-
-interface Task {
-  title: string;
-  category: string;
-  taskType: { type: string; amount: number };
-  often: { oftenType: string; oftenAmount: boolean[] | number };
-  color: string;
-  startDate: string[];
-  notification: string;
-}
+import { Task } from "@/lib/types";
+import { addDoc, collection } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 interface SendButtonProps {
   newTask: Task | undefined;
-  setNewTask: Dispatch<SetStateAction<Task | undefined>>;
 }
 
-const SendButton = ({ newTask, setNewTask }: SendButtonProps) => {
+const SendButton = ({ newTask }: SendButtonProps) => {
   const [taskState, setTaskState] = useState<boolean>(false);
 
   const taskSendToDb = async () => {
@@ -25,9 +16,10 @@ const SendButton = ({ newTask, setNewTask }: SendButtonProps) => {
       const taskRef = collection(db, `users/${auth.currentUser?.uid}/tasks`);
       try {
         await addDoc(taskRef, {
+          id: uuidv4(),
           title: newTask.title,
           category: newTask.category,
-          Type: newTask.taskType,
+          method: newTask.method,
           often: newTask.often,
           color: newTask.color,
           startDate: newTask.startDate,
@@ -47,12 +39,12 @@ const SendButton = ({ newTask, setNewTask }: SendButtonProps) => {
       newTask !== undefined &&
       newTask.title !== "" &&
       newTask.category !== "" &&
-      newTask.taskType.type !== "" &&
-      newTask.taskType.amount !== 0 &&
-      newTask.often.oftenType !== "" &&
-      newTask.often.oftenAmount !== 0 &&
+      newTask.method.kind !== "" &&
+      newTask.method.quantity !== 0 &&
+      newTask.often.density !== "" &&
+      newTask.often.amount !== 0 &&
       newTask.color !== "" &&
-      newTask.startDate.length !== 0
+      newTask.startDate !== ""
     ) {
       setTaskState(true);
     } else {

@@ -1,11 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface NotificationProps {
-  value: string;
   setValue: Dispatch<SetStateAction<string>>;
 }
 
-const Notification = ({ value, setValue }: NotificationProps) => {
+const Notification = ({ setValue }: NotificationProps) => {
   const [selectCheck, setSelectCheck] = useState<boolean>(true);
   const [hour, setHour] = useState<string>("");
   const [minute, setMinute] = useState<string>("");
@@ -21,23 +20,36 @@ const Notification = ({ value, setValue }: NotificationProps) => {
   }, [hour, minute, selectCheck]);
 
   return (
-    <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">
-      <label htmlFor="title" className="input-label">
-        Bildirim
-      </label>
-
-      <div className="w-full h-7 flex items-center justify-between text-xl">
+    <div className="w-11/12 h-20 flex  items-center justify-between">
+      <div className="w-6/12 h-20 flex flex-col items-start justify-evenly">
+        <label
+          htmlFor="title"
+          className="input-label cursor-help"
+          title="Bildirim Tercihinizi Belirtiniz"
+        >
+          Bildirim Aç / Kapat
+        </label>
         <button
           name="notification"
           id=""
-          className="w-5 h-7"
+          className="w-5 h-7 text-2xl"
           onClick={() => setSelectCheck(!selectCheck)}
+          title="Bildirim Kapat / Aç"
         >
           {selectCheck ? "🔊" : "🔈"}
         </button>
+      </div>
+      {selectCheck ? (
+        <div className="w-6/12 h-20 flex flex-col items-start justify-evenly">
+          <label
+            htmlFor="title"
+            className="input-label cursor-help"
+            title="Bildirim Almak istediğiniz Zamanı Giriniz"
+          >
+            Bildirim Zamanı
+          </label>
 
-        {selectCheck ? (
-          <div className="w-6/12 h-7 flex items-center justify-end">
+          <div className="w-full h-7 flex items-center justify-end">
             <input
               type="text"
               name="hour"
@@ -53,8 +65,8 @@ const Notification = ({ value, setValue }: NotificationProps) => {
               onChange={(e) => setMinute(e.target.value)}
             />
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 };

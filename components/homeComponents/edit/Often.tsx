@@ -1,11 +1,15 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface RepeatProps {
-  value: string;
-  setValue: Dispatch<SetStateAction<object>>;
+  setValue: Dispatch<
+    SetStateAction<{
+      density: string;
+      amount: boolean[] | number;
+    }>
+  >;
 }
 
-const Repeat = ({ setValue }: RepeatProps) => {
+const Often = ({ setValue }: RepeatProps) => {
   const [typeArray, setTypeArray] = useState<boolean[]>([
     false,
     false,
@@ -22,6 +26,7 @@ const Repeat = ({ setValue }: RepeatProps) => {
     false,
   ]);
 
+  //hafta seçimini kayıt etme
   useEffect(() => {
     if (typeArray[1] === true) {
       setValue((prevValue) => ({
@@ -35,23 +40,26 @@ const Repeat = ({ setValue }: RepeatProps) => {
     if (input === "everyday") {
       setTypeArray([true, false, false, false]);
       setValue(() => ({
-        oftenType: "everyday",
-        oftenAmount: 1,
+        density: "everyday",
+        amount: 1,
       }));
     } else if (input === "weekly") {
       setTypeArray([false, true, false, false]);
-      setValue(() => ({
-        oftenType: "weekly",
+      setValue((prev) => ({
+        ...prev,
+        density: "weekly",
       }));
     } else if (input === "loop") {
       setTypeArray([false, false, true, false]);
-      setValue(() => ({
-        oftenType: "everyxdays",
+      setValue((prev) => ({
+        ...prev,
+        density: "everyxdays",
       }));
     } else {
       setTypeArray([false, false, false, true]);
-      setValue(() => ({
-        oftenType: "once",
+      setValue((prev) => ({
+        ...prev,
+        density: "once",
       }));
     }
   };
@@ -66,29 +74,33 @@ const Repeat = ({ setValue }: RepeatProps) => {
 
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">
-      <label htmlFor="title" className="input-label">
-        Tekrar
+      <label
+        htmlFor="title"
+        className="input-label cursor-help"
+        title="Görevinizin Tekrar Sıklığını Seçiniz"
+      >
+        Tekrar Tercihi / Sıklığı
       </label>
       <div className="w-full h-7 flex items-center justify-between ">
         <select
           name=""
           id=""
-          className={`rounded-sm h-7 ${
-            typeArray[1] || typeArray[2] ? "w-5/12" : "w-full "
-          }`}
           onChange={(e) => handleChange(e.target.value)}
+          className={`rounded-sm h-7 cursor-pointer ${
+            typeArray[1] || typeArray[2] ? "w-5/12" : "w-full"
+          }`}
         >
           <option className="text-start ">----</option>
-          <option value="everyday" className="text-start ">
+          <option className="text-start" value="everyday">
             ♾️ Her Gün
           </option>
-          <option className="text-start" value="weekly text-black">
+          <option className="text-start" value="weekly">
             📆 Belirli Günler
           </option>
-          <option className="text-start" value="loop text-black">
+          <option className="text-start" value="loop">
             🛞 X Günde Bir Tekrar
           </option>
-          <option className="text-start" value="once text-black">
+          <option className="text-start" value="once">
             📍 Tekrar Yok
           </option>
         </select>
@@ -102,7 +114,7 @@ const Repeat = ({ setValue }: RepeatProps) => {
             onChange={(e) =>
               setValue((prevValue) => ({
                 ...prevValue,
-                amount: e.target.value,
+                amount: Number(e.target.value),
               }))
             }
           />
@@ -173,4 +185,4 @@ const Repeat = ({ setValue }: RepeatProps) => {
   );
 };
 
-export default Repeat;
+export default Often;

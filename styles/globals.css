@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 /*Change Component*/
+.change-component-frame {
+  @apply w-3/12 md:w-44 h-full flex flex-col md:flex-row  items-center justify-center hover:bg-secondBackground transition rounded-md cursor-pointer;
+}
 .change-component-button {
-  @apply w-28 h-full text-center hover:bg-secondBackground transition rounded-md;
+  @apply w-2/12 h-full text-center;
 }
 
 /*New Component*/

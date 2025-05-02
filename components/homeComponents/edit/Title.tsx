@@ -16,7 +16,11 @@ const Title = ({ value, setValue }: TitleProps) => {
   return (
     <div className="w-11/12 h-20 flex items-center justify-between">
       <div className="w-8/12 h-20 flex-col items-start justify-between  pt-2">
-        <label htmlFor="title" className="input-label">
+        <label
+          htmlFor="title"
+          className="input-label cursor-help"
+          title="Göreviniz için Bir İsim Belirleyiniz"
+        >
           Başlık
         </label>
         <input

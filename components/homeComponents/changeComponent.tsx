@@ -7,39 +7,45 @@ interface ChangeComponentProps {
 
 const ChangeComponent = ({ count, setCount }: ChangeComponentProps) => {
   return (
-    <div className="w-full lg:h-10 flex items-start justify-start">
-      <button
-        className={`change-component-button ${
-          count === 0 ? "bg-customPurple" : null
+    <div className="w-full h-12 flex items-start justify-start text-secondTextColor">
+      <div
+        className={`change-component-frame ${
+          count === 0 ? "bg-secondBackground text-mainTextColor" : null
         }`}
         onClick={() => setCount(0)}
       >
-        Günlük
-      </button>
-      <button
-        className={`change-component-button ${
-          count === 1 ? "bg-customPurple" : null
+        <button className={`change-component-button`}>✅</button>
+        <p>Görevler</p>
+      </div>
+      <div
+        className={`change-component-frame ${
+          count === 1 ? "bg-secondBackground text-mainTextColor" : null
         }`}
         onClick={() => setCount(1)}
       >
-        Yeni
-      </button>
-      <button
-        className={`change-component-button ${
-          count === 2 ? "bg-customPurple" : null
+        <button className={`change-component-button `}>✏️</button>
+        <p>Düzenle</p>
+      </div>
+
+      <div
+        className={`change-component-frame ${
+          count == 2 ? "bg-secondBackground text-mainTextColor" : null
         }`}
         onClick={() => setCount(2)}
       >
-        Durum
-      </button>
-      <button
-        className={`change-component-button ${
-          count === 3 ? "bg-customPurple" : null
+        <button className={`change-component-button `}>📊</button>
+        <p>Performans</p>
+      </div>
+
+      <div
+        className={`change-component-frame ${
+          count === 3 ? "bg-secondBackground text-mainTextColor" : null
         }`}
         onClick={() => setCount(3)}
       >
-        Geçmiş
-      </button>
+        <button className={`change-component-button `}>📆</button>
+        <p>Takvim</p>
+      </div>
     </div>
   );
 };

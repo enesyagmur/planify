@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface StartDateProps {
-  value: string;
   setValue: Dispatch<SetStateAction<string>>;
 }
 
-const StartDate = ({ value, setValue }: StartDateProps) => {
+const StartDate = ({ setValue }: StartDateProps) => {
   const [startArray, setstartArray] = useState<boolean[]>([true, false, false]);
 
   const date = new Date();
@@ -44,8 +43,12 @@ const StartDate = ({ value, setValue }: StartDateProps) => {
 
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">
-      <label htmlFor="title" className="input-label">
-        Başlangıç Günü
+      <label
+        htmlFor="title"
+        className="input-label cursor-help"
+        title="Görevinizin Hangi Tarihten İtibaren Aktif Olmasını İstiyorsunuz"
+      >
+        Görev Başlangıç Günü
       </label>
       <div className="w-full h-7 flex items-center justify-between ">
         <select

@@ -1,14 +1,18 @@
 import { Dispatch, SetStateAction } from "react";
 
 interface TypeProps {
-  setValue: Dispatch<SetStateAction<object>>;
+  setValue: Dispatch<SetStateAction<{ kind: string; quantity: number }>>;
 }
 
 const Type = ({ setValue }: TypeProps) => {
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly">
-      <label htmlFor="type" className="input-label">
-        Görev Tipi
+      <label
+        htmlFor="type"
+        className="input-label cursor-help"
+        title="Görevin Süresini ya da Adetini Giriniz"
+      >
+        Görev Tamamlama Tipi
       </label>
       <div className="w-full h-7 flex items-center justify-between ">
         <select
@@ -18,7 +22,7 @@ const Type = ({ setValue }: TypeProps) => {
           onChange={(e) =>
             setValue((prevValue) => ({
               ...prevValue,
-              type: e.target.value,
+              kind: e.target.value,
             }))
           }
         >
@@ -42,7 +46,7 @@ const Type = ({ setValue }: TypeProps) => {
           onChange={(e) =>
             setValue((prevValue) => ({
               ...prevValue,
-              amount: e.target.value,
+              quantity: Number(e.target.value),
             }))
           }
         />

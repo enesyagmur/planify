@@ -15,30 +15,18 @@ interface ColorProps {
 const Color = ({ value, setValue }: ColorProps) => {
   const [colorList, setColorList] = useState<Color[]>([]);
 
-  const showClasses = [
-    "bg-lime-400",
-    "bg-emerald-500",
-    "bg-amber-950",
-    "bg-orange-600",
-    "bg-amber-500",
-    "bg-fuchsia-500",
-    "bg-violet-500",
-    "bg-zinc-700",
-    "bg-red-600",
-    "bg-sky-500",
-    "bg-blue-500",
-  ];
-
   const fetchColors = async () => {
-    try {
-      const colorsCollection = collection(db, "colors");
-      const colorSnapshot = await getDocs(colorsCollection);
-      const result: Color[] = colorSnapshot.docs.map((doc) => ({
-        ...(doc.data() as Color),
-      }));
-      setColorList(result);
-    } catch (error) {
-      console.error("Renkleri Çekerken hata: ", error);
+    if (colorList.length === 0) {
+      try {
+        const colorsCollection = collection(db, "colors");
+        const colorSnapshot = await getDocs(colorsCollection);
+        const result: Color[] = colorSnapshot.docs.map((doc) => ({
+          ...(doc.data() as Color),
+        }));
+        setColorList(result);
+      } catch (error) {
+        console.error("Renkleri Çekerken hata: ", error);
+      }
     }
   };
 
@@ -48,8 +36,12 @@ const Color = ({ value, setValue }: ColorProps) => {
 
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-center ">
-      <label htmlFor="title" className="input-label mb-1">
-        Renk
+      <label
+        htmlFor="title"
+        className="input-label mb-1 cursor-help"
+        title="Görev Rengi Seçiniz"
+      >
+        Görev Tema Rengi
       </label>
 
       <div className="w-full flex items-center justify-between rounded-sm h-7 mb-3">

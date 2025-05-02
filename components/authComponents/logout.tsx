@@ -2,7 +2,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { RiLogoutCircleRFill } from "react-icons/ri";
+import { FaDoorClosed } from "react-icons/fa";
 
 const Logout = () => {
   const router = useRouter();
@@ -18,8 +18,8 @@ const Logout = () => {
       });
   };
   return (
-    <button onClick={userExit}>
-      <RiLogoutCircleRFill />
+    <button onClick={userExit} className="text-dangerRed" title="Çıkış">
+      <FaDoorClosed />
     </button>
   );
 };
