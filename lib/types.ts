@@ -11,3 +11,11 @@ export type Task = {
 };
 
 export type Tasks = Task[];
+
+export type Component = {
+  name: string;
+  title: string;
+  icon: string;
+};
+
+export type Components = Component[];

@@ -22,6 +22,12 @@ export default {
   theme: {
     extend: {
       colors: {
+        mainBackground: "#252527",
+        secondBackground: "#3b3b3d",
+        thirdBackground: "#444446",
+
+        themeColor: "#c8fe2d",
+
         mainBlue: "#3b82f6",
         darkBlue: "#1d4ed8",
         lightBlue: "#60a5fa",
@@ -30,12 +36,8 @@ export default {
         darkGreen: "#15803d",
         lightGreen: "#4ade80",
 
-        mainBackground: "#0a0a0a",
-        secondBackground: "#262626",
-
-        borderLine: "#404040",
-        mainTextColor: "#f8fafc",
-        secondTextColor: "#a3a3a3",
+        mainTextColor: "#fbfbfd",
+        secondTextColor: "#dfdfe3",
         dangerRed: "#ef4444",
         infoYellow: "#facc15",
       },

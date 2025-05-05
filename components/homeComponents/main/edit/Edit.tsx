@@ -57,7 +57,7 @@ const Edit = () => {
   }, [title, category, method, often, color, startDate, notification]);
 
   return (
-    <div className="w-11/12 min-h-[700px]  md:min-h-[600px] flex flex-col md:flex-row items-center justify-center text-mainBackground">
+    <div className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground">
       <div className="w-11/12 md:w-6/12 h-full flex flex-col items-center justify-between relative">
         <Title setValue={setTitle} value={title} />
         <SelectCategory setValue={setCategory} value={category} />

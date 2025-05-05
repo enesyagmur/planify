@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex items-center justify-center bg-mainBackground text-mainTextColor`}
       >
         <div className="w-full  flex items-center justify-center ">
-          {children}
+          <Provider store={store}>{children}</Provider>
         </div>
       </body>
     </html>

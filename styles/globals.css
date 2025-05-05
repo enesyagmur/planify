@@ -4,7 +4,7 @@
 
 /*Change Component*/
 .change-component-frame {
-  @apply w-3/12 md:w-44 h-full flex flex-col md:flex-row  items-center justify-center hover:bg-secondBackground transition rounded-md cursor-pointer;
+  @apply w-full h-1/6 flex flex-row  items-center justify-start lg:pl-8 hover:bg-secondBackground transition  cursor-pointer;
 }
 .change-component-button {
   @apply w-2/12 h-full text-center;

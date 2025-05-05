@@ -20,7 +20,7 @@ const CurrentUserAllTasks = () => {
   console.log(tasks);
 
   return (
-    <div className="w-11/12 h-5/6 flex flex-col items-center justify-center">
+    <div className="w-11/12 h-full flex flex-col items-center justify-center">
       {tasks && tasks.map((item) => <SingleTask key={item.id} task={item} />)}
     </div>
   );
