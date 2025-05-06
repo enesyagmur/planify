@@ -1,10 +1,11 @@
 import React from "react";
-import CurrentUserAllTasks from "./CurrentUserAllTasks";
+import AllTasks from "./allTasks/AllTasks";
+import DailyTasks from "./dailyTasks/DailyTasks";
 
 const Tasks = () => {
   return (
-    <div className="w-11/12 h-full flex flex-col items-center justify-center ">
-      <CurrentUserAllTasks />
+    <div className="w-full  h-full flex flex-col items-center justify-center ">
+      <DailyTasks />
     </div>
   );
 };

@@ -8,7 +8,7 @@ interface SingleTaskProps {
 const SingleTask = ({ task }: SingleTaskProps) => {
   return (
     <div
-      className={`w-[500px] h-[50px] flex  items-center justify-between rounded-md p-2 m-2 cursor-pointer transition-all hover:opacity-90  ${task.color}`}
+      className={`w-full md:6/12 h-12 flex items-center justify-between rounded-md p-2 m-2 cursor-pointer transition-all hover:opacity-90  ${task.color}`}
     >
       <p className="w-3/12 font-bold capitalize">{task.title}</p>
       <div className="w-3/12 flex items-center justify-center">

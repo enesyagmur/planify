@@ -2,13 +2,13 @@
 
 import React from "react";
 import Logo from "./Logo";
-import ChangeComponent from "./ComponentList";
+import ComponentList from "./ComponentList";
 
 const Panel = () => {
   return (
-    <div className="w-2/12 h-full flex flex-col border-r-[1px] border-secondBackground">
+    <div className="w-1/12 sm:w-2/12 h-full flex flex-col items-center border-r-[1px] border-secondBackground">
       <Logo />
-      <ChangeComponent />
+      <ComponentList />
     </div>
   );
 };

@@ -5,9 +5,9 @@ export type Task = {
   method: { kind: string; quantity: number };
   often: { density: string; amount: boolean[] | number };
   color: string;
-  startDate: string;
+  startDate: { day: number; month: number; year: number };
   notification: string;
-  completion: boolean;
+  completion: string;
 };
 
 export type Tasks = Task[];

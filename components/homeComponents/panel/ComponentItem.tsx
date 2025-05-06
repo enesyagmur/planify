@@ -1,6 +1,8 @@
 "use client";
 
+import { changeComponent } from "@/redux/panelSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 interface ComponentItemProps {
   selectedComponent: string;
@@ -15,6 +17,8 @@ const ComponentItem = ({
   title,
   icon,
 }: ComponentItemProps) => {
+  const dispatch = useDispatch();
+
   return (
     <div
       className={`change-component-frame ${
@@ -22,10 +26,11 @@ const ComponentItem = ({
           ? "bg-secondBackground text-mainTextColor"
           : null
       }`}
-      //   onClick={() => setCount(3)}
+      onClick={() => dispatch(changeComponent(`${name}`))}
     >
-      <button className={`change-component-button `}>{icon}</button>
-      <p>{title}</p>
+      <button className={`change-component-button`}>{icon}</button>
+
+      <p className="hidden md:flex">{title}</p>
     </div>
   );
 };

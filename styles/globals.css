@@ -4,10 +4,10 @@
 
 /*Change Component*/
 .change-component-frame {
-  @apply w-full h-1/6 flex flex-row  items-center justify-start lg:pl-8 hover:bg-secondBackground transition  cursor-pointer;
+  @apply w-full h-1/6 flex flex-row  items-center justify-center md:justify-start lg:pl-8 hover:bg-secondBackground transition  cursor-pointer;
 }
 .change-component-button {
-  @apply w-2/12 h-full text-center;
+  @apply w-full sm:w-2/12 h-full text-center;
 }
 
 /*New Component*/

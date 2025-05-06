@@ -20,8 +20,8 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="w-full flex min-h-screen items-center justify-center p-8 ">
-      <div className="w-full lg:h-[650px] flex items-start justify-start border-[1px] border-thirdBackground rounded-xl">
+    <div className="w-full flex min-h-screen items-center justify-center p-2 md:p-8 ">
+      <div className="w-full h-[700px] sm:h-[670px] flex items-start justify-start border-[1px] border-thirdBackground rounded-xl">
         <Panel />
         <Main />
       </div>

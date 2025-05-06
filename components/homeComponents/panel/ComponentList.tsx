@@ -33,7 +33,7 @@ const ComponentList = () => {
   ];
 
   return (
-    <div className="w-full h-3/6 flex flex-col items-center  text-secondTextColor ">
+    <div className="w-full h-3/6 flex flex-col items-center text-secondTextColor ">
       {components.map((item, index) => (
         <ComponentItem
           selectedComponent={selectedComponent}

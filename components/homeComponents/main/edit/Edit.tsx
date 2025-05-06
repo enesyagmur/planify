@@ -27,7 +27,11 @@ const Edit = () => {
     amount: 0,
   });
   const [color, setColor] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<{
+    day: number;
+    month: number;
+    year: number;
+  }>({ day: -1, month: -1, year: -1 });
   const [notification, setNotification] = useState<string>("");
 
   const [newTask, setNewTask] = useState<Task | undefined>({
@@ -39,7 +43,7 @@ const Edit = () => {
     color,
     startDate,
     notification,
-    completion: false,
+    completion: "waiting",
   });
 
   useEffect(() => {
@@ -52,7 +56,7 @@ const Edit = () => {
       color,
       startDate,
       notification,
-      completion: false,
+      completion: "waiting",
     });
   }, [title, category, method, often, color, startDate, notification]);
 

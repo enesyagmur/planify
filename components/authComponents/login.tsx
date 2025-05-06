@@ -31,7 +31,7 @@ const Login = () => {
           });
           console.log("Yeni kullanıcı kaydedildi.");
         }
-        router.push("/");
+        router.push("/home");
         console.log("Google ile giriş yapıldı.");
       }
     } catch (err) {

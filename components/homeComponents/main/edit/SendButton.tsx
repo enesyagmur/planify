@@ -24,7 +24,7 @@ const SendButton = ({ newTask }: SendButtonProps) => {
           color: newTask.color,
           startDate: newTask.startDate,
           notification: newTask.notification,
-          completion: false,
+          completion: "waiting",
         });
 
         console.log("Görev kayıt edildi");
@@ -44,7 +44,9 @@ const SendButton = ({ newTask }: SendButtonProps) => {
       newTask.often.density !== "" &&
       newTask.often.amount !== 0 &&
       newTask.color !== "" &&
-      newTask.startDate !== ""
+      newTask.startDate.day !== -1 &&
+      newTask.startDate.month !== -1 &&
+      newTask.startDate.year !== -1
     ) {
       setTaskState(true);
     } else {

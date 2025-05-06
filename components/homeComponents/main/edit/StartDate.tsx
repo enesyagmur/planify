@@ -1,7 +1,13 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface StartDateProps {
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue: Dispatch<
+    SetStateAction<{
+      day: number;
+      month: number;
+      year: number;
+    }>
+  >;
 }
 
 const StartDate = ({ setValue }: StartDateProps) => {
@@ -14,16 +20,13 @@ const StartDate = ({ setValue }: StartDateProps) => {
 
   const [customDate, setCustomDate] = useState<string[]>(["", "", ""]);
 
-  const today = `${day}.${month + 1}.${year}`;
-  const tomorrow = `${day + 1}.${month + 1}.${year}`;
-
   const handleChange = (input: string) => {
     if (input === "today") {
       setstartArray([true, false, false]);
-      setValue(today);
+      setValue({ day: day, month: month, year: year });
     } else if (input === "tomorrow") {
       setstartArray([false, true, false]);
-      setValue(tomorrow);
+      setValue({ day: day + 1, month: month, year: year });
     } else {
       setstartArray([false, false, true]);
     }
@@ -36,7 +39,11 @@ const StartDate = ({ setValue }: StartDateProps) => {
         customDate[1].length === 2 &&
         customDate[2].length === 4
       ) {
-        setValue(`${customDate[0]}.${customDate[1]}.${customDate[2]}`);
+        setValue({
+          day: Number(customDate[0]),
+          month: Number(customDate[1]) - 1,
+          year: Number(customDate[2]),
+        });
       }
     }
   }, [customDate]);

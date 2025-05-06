@@ -10,7 +10,7 @@ const Logout = () => {
   const userExit = () => {
     signOut(auth)
       .then(() => {
-        router.push("/auth");
+        router.push("/");
         console.log("Çıkış yapıldı.");
       })
       .catch((err) => {
