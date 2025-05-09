@@ -1,12 +1,14 @@
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import { Task } from "./types";
+import { AppDispatch } from "@/redux/store";
+import { setReduxTasks } from "@/redux/tasksSlice";
 
-const takeUserTasks = async () => {
+const takeUserTasks = async (dispatch: AppDispatch) => {
   const userId = auth.currentUser?.uid;
-  // if (!userId) {
-  //   throw new Error("Kullanıcı Oturumu Yok");
-  // }
+  if (!userId) {
+    throw new Error("Kullanıcı Oturumu Yok");
+  }
   const tasksRef = collection(db, `users/${userId}/tasks`);
 
   try {
@@ -16,7 +18,7 @@ const takeUserTasks = async () => {
       ...(doc.data() as Task),
     }));
 
-    return tasks;
+    dispatch(setReduxTasks(tasks));
   } catch (err) {
     console.error("Görevler Çekilirken Hata: ", err);
     return [];

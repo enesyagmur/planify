@@ -1,5 +1,5 @@
 import { Tasks } from "@/lib/types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TasksState {
   tasksArray: Tasks;
@@ -14,11 +14,18 @@ export const tasksSlice = createSlice({
   initialState,
   reducers: {
     setReduxTasks: (state, action) => {
-      state.tasksArray = [...action.payload];
+      state.tasksArray = action.payload;
+    },
+    taskCompletionUpdate: (state, action: PayloadAction<string>) => {
+      state.tasksArray.forEach((item) => {
+        if (item.id === action.payload) {
+          item.completion = !item.completion;
+        }
+      });
     },
   },
 });
 
-export const { setReduxTasks } = tasksSlice.actions;
+export const { setReduxTasks, taskCompletionUpdate } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

@@ -1,6 +1,10 @@
 import { Task } from "./types";
 
-const isTodayTask = (task: Task, todayDate: number[]): boolean => {
+export const isTodayTask = (task: Task, todayDate: number[]): boolean => {
+  if (!task.often) {
+    throw new Error("isTodayTask ts dosyasına eksik veri gönderiliyor");
+  }
+
   if (task.often.density === "everyday") {
     return true;
   }
@@ -45,5 +49,3 @@ const isTodayTask = (task: Task, todayDate: number[]): boolean => {
 
   return false;
 };
-
-export default isTodayTask;

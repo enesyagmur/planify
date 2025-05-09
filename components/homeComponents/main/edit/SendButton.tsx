@@ -1,6 +1,6 @@
 import { auth, db } from "@/lib/firebase";
 import { Task } from "@/lib/types";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,7 +15,7 @@ const SendButton = ({ newTask }: SendButtonProps) => {
     if (newTask) {
       const taskRef = collection(db, `users/${auth.currentUser?.uid}/tasks`);
       try {
-        await addDoc(taskRef, {
+        const docRef = await addDoc(taskRef, {
           id: uuidv4(),
           title: newTask.title,
           category: newTask.category,
@@ -24,10 +24,23 @@ const SendButton = ({ newTask }: SendButtonProps) => {
           color: newTask.color,
           startDate: newTask.startDate,
           notification: newTask.notification,
-          completion: "waiting",
+          completion: false,
         });
 
         console.log("Görev kayıt edildi");
+        const firebaseId = docRef.id;
+
+        const updateRef = doc(
+          db,
+          `users/${auth.currentUser?.uid}/tasks`,
+          firebaseId
+        );
+
+        await updateDoc(updateRef, {
+          id: firebaseId,
+        });
+
+        console.log("Id Güncellendi");
       } catch (err) {
         console.error("Görev kayıt edilemed: ", err);
       }

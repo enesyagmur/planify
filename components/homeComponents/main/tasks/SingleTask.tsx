@@ -1,21 +1,55 @@
 import { Task } from "@/lib/types";
+import { taskCompletionUpdate } from "@/redux/tasksSlice";
 import React from "react";
+import { HiDotsVertical } from "react-icons/hi";
+import { TiTick } from "react-icons/ti";
+import { useDispatch } from "react-redux";
+import { FiDelete } from "react-icons/fi";
+import taskCompletionChange from "@/lib/taskCompletionChange";
 
 interface SingleTaskProps {
   task: Task;
 }
 
 const SingleTask = ({ task }: SingleTaskProps) => {
+  const dispatch = useDispatch();
+  const handleClick = async () => {
+    dispatch(taskCompletionUpdate(task.id));
+    await taskCompletionChange(task.id, !task.completion);
+  };
   return (
     <div
-      className={`w-full md:6/12 h-12 flex items-center justify-between rounded-md p-2 m-2 cursor-pointer transition-all hover:opacity-90  ${task.color}`}
+      className={`w-full md:6/12 h-[54px] flex  items-center justify-evenly rounded-xl p-2 m-2  transition-all hover:opacity-90  bg-thirdBackground ${
+        task.completion ? "opacity-60" : ""
+      }`}
     >
-      <p className="w-3/12 font-bold capitalize">{task.title}</p>
-      <div className="w-3/12 flex items-center justify-center">
+      <button>
+        <HiDotsVertical />
+      </button>
+      <p
+        className={`w-4/12 text-md capitalize ${
+          task.completion ? "line-through" : ""
+        }`}
+      >
+        {task.title}
+      </p>
+
+      <div className="w-3/12 flex items-center justify-center text-secondTextColor text-sm">
         <p>{task.method.quantity}</p>
         <p className="ml-1">{task.method.kind}</p>
       </div>
-      {task.notification ? <p>{task.notification}</p> : null}
+
+      <button
+        className={`w-7 h-7 rounded-full border-[1px] border-secondBackground flex items-center justify-center text-secondTextColor ${
+          task.completion
+            ? "hover:text-dangerRed hover:border-dangerRed text-[12px]"
+            : "hover:text-mainGreen hover:border-darkGreen"
+        } `}
+        title="Görev Durumu"
+        onClick={handleClick}
+      >
+        {task.completion === false ? <TiTick /> : <FiDelete />}
+      </button>
     </div>
   );
 };

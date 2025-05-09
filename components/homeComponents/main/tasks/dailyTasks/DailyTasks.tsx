@@ -1,40 +1,41 @@
 import dailyFilter from "@/lib/dailyFilter";
-import takeUserTasks from "@/lib/takeUserTasks";
 import { Tasks } from "@/lib/types";
 import { StoreRootState } from "@/redux/store";
-import { setReduxTasks } from "@/redux/tasksSlice";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SingleTask from "../SingleTask";
+import { useSelector } from "react-redux";
+
+import WaitingTasks from "./WaitingTasks";
+import DoneTasks from "./DoneTasks";
 
 const DailyTasks = () => {
   const [filteredTasks, setFilteredTasks] = useState<Tasks>([]);
+  const [waitingTasks, setWaitingTasks] = useState<Tasks>([]);
+  const [doneTasks, setDoneTasks] = useState<Tasks>([]);
+
   const reduxTasks = useSelector(
     (state: StoreRootState) => state.reduxTasks.tasksArray
   );
-  const dispatch = useDispatch();
-
-  const fetchData = async () => {
-    const result: Tasks = await takeUserTasks();
-    if (result) {
-      dispatch(setReduxTasks(result));
-      setFilteredTasks(dailyFilter(result));
-    }
-  };
 
   useEffect(() => {
-    if (Array.isArray(reduxTasks) && reduxTasks.length === 0) {
-      fetchData();
-    }
-    if (reduxTasks.length !== 0) {
+    if (reduxTasks.length > 0) {
       setFilteredTasks(dailyFilter(reduxTasks));
     }
-  }, []);
+  }, [reduxTasks]);
+
+  useEffect(() => {
+    setWaitingTasks(() => {
+      return filteredTasks.filter((item) => item.completion === false);
+    });
+
+    setDoneTasks(() => {
+      return filteredTasks.filter((item) => item.completion !== false);
+    });
+  }, [filteredTasks]);
 
   return (
-    <div className="w-11/12 h-full flex flex-col items-center justify-center">
-      {filteredTasks &&
-        filteredTasks.map((item) => <SingleTask key={item.id} task={item} />)}
+    <div className="w-11/12 h-full flex flex-col md:flex-row items-center justify-evenly overflow-y-scroll md:overflow-hidden">
+      <WaitingTasks value={waitingTasks} />
+      <DoneTasks value={doneTasks} />
     </div>
   );
 };

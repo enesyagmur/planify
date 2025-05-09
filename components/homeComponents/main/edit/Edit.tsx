@@ -43,7 +43,7 @@ const Edit = () => {
     color,
     startDate,
     notification,
-    completion: "waiting",
+    completion: false,
   });
 
   useEffect(() => {
@@ -56,19 +56,19 @@ const Edit = () => {
       color,
       startDate,
       notification,
-      completion: "waiting",
+      completion: false,
     });
   }, [title, category, method, often, color, startDate, notification]);
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground">
-      <div className="w-11/12 md:w-6/12 h-full flex flex-col items-center justify-between relative">
+      <div className="w-11/12 md:w-6/12 h-full md:h-4/6 lg:h-3/6 flex flex-col items-center justify-between relative">
         <Title setValue={setTitle} value={title} />
         <SelectCategory setValue={setCategory} value={category} />
         <Type setValue={setMethod} />
         <Often setValue={setOften} />
       </div>
-      <div className="w-11/12 md:w-6/12 h-full flex flex-col items-center justify-between">
+      <div className="w-11/12 md:w-6/12 h-full md:h-4/6 lg:h-3/6 flex flex-col items-center justify-between">
         <Color setValue={setColor} value={color} />
         <StartDate setValue={setStartDate} />
         <Notification setValue={setNotification} />
