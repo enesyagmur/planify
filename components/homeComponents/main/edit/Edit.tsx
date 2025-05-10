@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SelectCategory from "./SelectCategory";
 import Title from "./Title";
 import Type from "./Type";
 import Color from "./Color";
 import StartDate from "./StartDate";
 import Notification from "./Notification";
-import SendButton from "./SendButton";
 import { Task } from "@/lib/types";
 import Often from "./Often";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreRootState } from "@/redux/store";
+import { updateEditTask } from "@/redux/editSlice";
+import SaveButton from "./SaveButton";
+import UpdateButton from "./UpdateButton";
+import DeleteButton from "./DeleteButton";
 
 const Edit = () => {
+  const editTaskRedux = useSelector(
+    (state: StoreRootState) => state.taksEdit.task
+  );
+  const dispatch = useDispatch();
   const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [method, setMethod] = useState<{
@@ -34,17 +43,7 @@ const Edit = () => {
   }>({ day: -1, month: -1, year: -1 });
   const [notification, setNotification] = useState<string>("");
 
-  const [newTask, setNewTask] = useState<Task | undefined>({
-    id: "",
-    title,
-    category,
-    method,
-    often,
-    color,
-    startDate,
-    notification,
-    completion: false,
-  });
+  const [newTask, setNewTask] = useState<Task | undefined>(undefined);
 
   useEffect(() => {
     setNewTask({
@@ -56,9 +55,23 @@ const Edit = () => {
       color,
       startDate,
       notification,
-      completion: false,
+      completion: [{ day: 0, month: 0, year: 0 }],
     });
   }, [title, category, method, often, color, startDate, notification]);
+
+  useEffect(() => {
+    if (editTaskRedux) {
+      setNewTask(editTaskRedux);
+    }
+  }, [editTaskRedux]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(updateEditTask(null));
+    };
+  }, []);
+
+  console.log(editTaskRedux);
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground">
@@ -72,7 +85,13 @@ const Edit = () => {
         <Color setValue={setColor} value={color} />
         <StartDate setValue={setStartDate} />
         <Notification setValue={setNotification} />
-        <SendButton newTask={newTask} />
+        {editTaskRedux ? (
+          <div className="w-11/12 h-20 flex items-center justify-between">
+            <UpdateButton /> <DeleteButton />
+          </div>
+        ) : (
+          <SaveButton newTask={newTask} />
+        )}
       </div>
     </div>
   );

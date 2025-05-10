@@ -6,6 +6,8 @@ import { TiTick } from "react-icons/ti";
 import { useDispatch } from "react-redux";
 import { FiDelete } from "react-icons/fi";
 import taskCompletionChange from "@/lib/taskCompletionChange";
+import { updateEditTask } from "@/redux/editSlice";
+import { changeComponent } from "@/redux/panelSlice";
 
 interface SingleTaskProps {
   task: Task;
@@ -13,9 +15,14 @@ interface SingleTaskProps {
 
 const SingleTask = ({ task }: SingleTaskProps) => {
   const dispatch = useDispatch();
-  const handleClick = async () => {
+  const handleStateChangeClick = async () => {
     dispatch(taskCompletionUpdate(task.id));
     await taskCompletionChange(task.id, !task.completion);
+  };
+
+  const handleEditTaskSelect = () => {
+    dispatch(updateEditTask(task));
+    dispatch(changeComponent("edit"));
   };
   return (
     <div
@@ -23,7 +30,7 @@ const SingleTask = ({ task }: SingleTaskProps) => {
         task.completion ? "opacity-60" : ""
       }`}
     >
-      <button>
+      <button title="Düzenle" onClick={handleEditTaskSelect}>
         <HiDotsVertical />
       </button>
       <p
@@ -46,9 +53,9 @@ const SingleTask = ({ task }: SingleTaskProps) => {
             : "hover:text-mainGreen hover:border-darkGreen"
         } `}
         title="Görev Durumu"
-        onClick={handleClick}
+        onClick={handleStateChangeClick}
       >
-        {task.completion === false ? <TiTick /> : <FiDelete />}
+        {/* {task.completion === false ? <TiTick /> : <FiDelete />} */}
       </button>
     </div>
   );

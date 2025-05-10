@@ -7,7 +7,7 @@ export type Task = {
   color: string;
   startDate: { day: number; month: number; year: number };
   notification: string;
-  completion: boolean;
+  completion: [{ day: number; month: number; year: number }];
 };
 
 export type Tasks = Task[];

@@ -3,13 +3,20 @@ import { Task } from "@/lib/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { IoAddCircle } from "react-icons/io5";
 
-interface SendButtonProps {
+interface SaveButtonProps {
   newTask: Task | undefined;
 }
 
-const SendButton = ({ newTask }: SendButtonProps) => {
+const SaveButton = ({ newTask }: SaveButtonProps) => {
   const [taskState, setTaskState] = useState<boolean>(false);
+  const time = new Date();
+  const thisDay = time.getDay();
+  const thisMonth = time.getMonth();
+  const thisYear = time.getFullYear();
+
+  const thisTime = { day: thisDay, month: thisMonth, year: thisYear };
 
   const taskSendToDb = async () => {
     if (newTask) {
@@ -24,7 +31,7 @@ const SendButton = ({ newTask }: SendButtonProps) => {
           color: newTask.color,
           startDate: newTask.startDate,
           notification: newTask.notification,
-          completion: false,
+          completion: [thisTime],
         });
 
         console.log("Görev kayıt edildi");
@@ -71,15 +78,16 @@ const SendButton = ({ newTask }: SendButtonProps) => {
     <div className="w-full h-20 flex items-end justify-center text-secondTextColor pb-2">
       <button
         disabled={!taskState}
-        className={`w-11/12 p-1 rounded-md border-[1px] border-customYellow  cursor-not-allowed ${
+        className={`w-11/12 p-1 flex items-center justify-center rounded-md border-[1px] border-customYellow  cursor-not-allowed ${
           taskState ? "bg-darkBlue cursor-pointer text-mainTextColor" : ""
         }`}
         onClick={taskSendToDb}
       >
+        <IoAddCircle className="mr-1" />
         Kaydet
       </button>
     </div>
   );
 };
 
-export default SendButton;
+export default SaveButton;
