@@ -15,31 +15,25 @@ interface SingleTaskProps {
 
 const SingleTask = ({ task }: SingleTaskProps) => {
   const dispatch = useDispatch();
+
   const handleStateChangeClick = async () => {
-    dispatch(taskCompletionUpdate(task.id));
-    await taskCompletionChange(task.id, !task.completion);
+    // dispatch(taskCompletionUpdate(task.id));
+    await taskCompletionChange(task.id);
   };
 
+  //görevi alıp düzenleme sayfasına gider
   const handleEditTaskSelect = () => {
     dispatch(updateEditTask(task));
     dispatch(changeComponent("edit"));
   };
   return (
     <div
-      className={`w-full md:6/12 h-[54px] flex  items-center justify-evenly rounded-xl p-2 m-2  transition-all hover:opacity-90  bg-thirdBackground ${
-        task.completion ? "opacity-60" : ""
-      }`}
+      className={`w-full md:6/12 h-[54px] flex  items-center justify-evenly rounded-xl p-2 m-2  transition-all hover:opacity-90  bg-thirdBackground `}
     >
       <button title="Düzenle" onClick={handleEditTaskSelect}>
         <HiDotsVertical />
       </button>
-      <p
-        className={`w-4/12 text-md capitalize ${
-          task.completion ? "line-through" : ""
-        }`}
-      >
-        {task.title}
-      </p>
+      <p className={`w-4/12 text-md capitalize `}>{task.title}</p>
 
       <div className="w-3/12 flex items-center justify-center text-secondTextColor text-sm">
         <p>{task.method.quantity}</p>
@@ -55,7 +49,7 @@ const SingleTask = ({ task }: SingleTaskProps) => {
         title="Görev Durumu"
         onClick={handleStateChangeClick}
       >
-        {/* {task.completion === false ? <TiTick /> : <FiDelete />} */}
+        {/* {task.completion === false ? <TiTick /> : <FiDelete />} */} +
       </button>
     </div>
   );

@@ -11,12 +11,6 @@ interface SaveButtonProps {
 
 const SaveButton = ({ newTask }: SaveButtonProps) => {
   const [taskState, setTaskState] = useState<boolean>(false);
-  const time = new Date();
-  const thisDay = time.getDay();
-  const thisMonth = time.getMonth();
-  const thisYear = time.getFullYear();
-
-  const thisTime = { day: thisDay, month: thisMonth, year: thisYear };
 
   const taskSendToDb = async () => {
     if (newTask) {
@@ -31,7 +25,7 @@ const SaveButton = ({ newTask }: SaveButtonProps) => {
           color: newTask.color,
           startDate: newTask.startDate,
           notification: newTask.notification,
-          completion: [thisTime],
+          completion: newTask.completion,
         });
 
         console.log("Görev kayıt edildi");

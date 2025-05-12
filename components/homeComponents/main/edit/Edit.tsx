@@ -15,6 +15,7 @@ import UpdateButton from "./UpdateButton";
 import DeleteButton from "./DeleteButton";
 
 const Edit = () => {
+  const [showButtons, setShowButtons] = useState<boolean>(false);
   const editTaskRedux = useSelector(
     (state: StoreRootState) => state.taksEdit.task
   );
@@ -55,23 +56,37 @@ const Edit = () => {
       color,
       startDate,
       notification,
-      completion: [{ day: 0, month: 0, year: 0 }],
+      completion: [{ day: -1, month: -1, year: -1 }],
     });
   }, [title, category, method, often, color, startDate, notification]);
 
   useEffect(() => {
-    if (editTaskRedux) {
-      setNewTask(editTaskRedux);
+    if (editTaskRedux !== null) {
+      setShowButtons(true);
     }
   }, [editTaskRedux]);
 
   useEffect(() => {
-    return () => {
-      dispatch(updateEditTask(null));
-    };
-  }, []);
+    if (editTaskRedux !== null) {
+      setNewTask({
+        id: editTaskRedux.id,
+        title: editTaskRedux.title,
+        category: editTaskRedux.category,
+        method: editTaskRedux.method,
+        often: editTaskRedux.often,
+        color: editTaskRedux.color,
+        startDate: editTaskRedux.startDate,
+        notification: editTaskRedux.notification,
+        completion: editTaskRedux.completion,
+      });
+    }
+  }, [showButtons]);
 
-  console.log(editTaskRedux);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(updateEditTask(null));
+  //   };
+  // }, []);
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground">
@@ -85,9 +100,9 @@ const Edit = () => {
         <Color setValue={setColor} value={color} />
         <StartDate setValue={setStartDate} />
         <Notification setValue={setNotification} />
-        {editTaskRedux ? (
+        {showButtons ? (
           <div className="w-11/12 h-20 flex items-center justify-between">
-            <UpdateButton /> <DeleteButton />
+            <UpdateButton /> <DeleteButton taskId={editTaskRedux?.id} />
           </div>
         ) : (
           <SaveButton newTask={newTask} />
