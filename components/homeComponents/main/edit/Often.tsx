@@ -1,15 +1,16 @@
+import { Task } from "@/lib/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface RepeatProps {
-  setValue: Dispatch<
-    SetStateAction<{
-      density: string;
-      amount: boolean[] | number;
-    }>
-  >;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const Often = ({ setValue }: RepeatProps) => {
+const Often = ({ oldTask, setNewTask }: RepeatProps) => {
+  const [value, setValue] = useState<{
+    density: string;
+    amount: boolean[] | number;
+  }>({ density: oldTask?.often.density, amount: oldTask?.often.amount });
   const [typeArray, setTypeArray] = useState<boolean[]>([
     false,
     false,
@@ -25,6 +26,13 @@ const Often = ({ setValue }: RepeatProps) => {
     false,
     false,
   ]);
+
+  useEffect(() => {
+    setNewTask((prewTask: Task) => ({
+      ...prewTask,
+      often: value,
+    }));
+  }, [value]);
 
   //hafta seçimini kayıt etme
   useEffect(() => {

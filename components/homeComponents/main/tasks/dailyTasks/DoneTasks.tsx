@@ -12,7 +12,9 @@ const DoneTasks = ({ value }: DoneTasksProps) => {
       <p className="collum-title">Tamamlanan</p>
       <div className="task-list">
         {value &&
-          value.map((item, index) => <SingleTask key={index} task={item} />)}
+          value.map((item, index) => (
+            <SingleTask key={index} task={item} completion={true} />
+          ))}
       </div>
     </div>
   );

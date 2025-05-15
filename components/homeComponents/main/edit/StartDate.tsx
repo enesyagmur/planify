@@ -1,17 +1,18 @@
+import { Task } from "@/lib/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface StartDateProps {
-  setValue: Dispatch<
-    SetStateAction<{
-      day: number;
-      month: number;
-      year: number;
-    }>
-  >;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const StartDate = ({ setValue }: StartDateProps) => {
+const StartDate = ({ oldTask, setNewTask }: StartDateProps) => {
   const [startArray, setstartArray] = useState<boolean[]>([true, false, false]);
+  const [value, setValue] = useState<{
+    day: number;
+    month: number;
+    year: number;
+  }>(oldTask.startDate);
 
   const date = new Date();
   const day = date.getDate();
@@ -47,6 +48,13 @@ const StartDate = ({ setValue }: StartDateProps) => {
       }
     }
   }, [customDate]);
+
+  useEffect(() => {
+    setNewTask((prewTask: Task) => ({
+      ...prewTask,
+      startDate: value,
+    }));
+  }, [value]);
 
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly ">

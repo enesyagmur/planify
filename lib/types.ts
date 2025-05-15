@@ -6,7 +6,7 @@ export type Task = {
   often: { density: string; amount: boolean[] | number };
   color: string;
   startDate: { day: number; month: number; year: number };
-  notification: string;
+  notification: { active: boolean; hour: number; minute: number };
   completion: [{ day: number; month: number; year: number }];
 };
 

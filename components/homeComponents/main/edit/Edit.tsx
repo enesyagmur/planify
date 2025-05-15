@@ -7,9 +7,8 @@ import StartDate from "./StartDate";
 import Notification from "./Notification";
 import { Task } from "@/lib/types";
 import Often from "./Often";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { StoreRootState } from "@/redux/store";
-import { updateEditTask } from "@/redux/editSlice";
 import SaveButton from "./SaveButton";
 import UpdateButton from "./UpdateButton";
 import DeleteButton from "./DeleteButton";
@@ -19,46 +18,23 @@ const Edit = () => {
   const editTaskRedux = useSelector(
     (state: StoreRootState) => state.taksEdit.task
   );
-  const dispatch = useDispatch();
-  const [title, setTitle] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
-  const [method, setMethod] = useState<{
-    kind: string;
-    quantity: number;
-  }>({
-    kind: "",
-    quantity: 0,
-  });
-  const [often, setOften] = useState<{
-    density: string;
-    amount: boolean[] | number;
-  }>({
-    density: "",
-    amount: 0,
-  });
-  const [color, setColor] = useState<string>("");
-  const [startDate, setStartDate] = useState<{
-    day: number;
-    month: number;
-    year: number;
-  }>({ day: -1, month: -1, year: -1 });
-  const [notification, setNotification] = useState<string>("");
+  const [renderKey, setRenderKey] = useState<number>(0);
 
-  const [newTask, setNewTask] = useState<Task | undefined>(undefined);
+  const handleRender = () => {
+    setRenderKey((prev) => prev + 1);
+  };
 
-  useEffect(() => {
-    setNewTask({
-      id: "",
-      title,
-      category,
-      method,
-      often,
-      color,
-      startDate,
-      notification,
-      completion: [{ day: -1, month: -1, year: -1 }],
-    });
-  }, [title, category, method, often, color, startDate, notification]);
+  const [newTask, setNewTask] = useState<Task>({
+    id: "",
+    title: "",
+    category: "",
+    method: { kind: "", quantity: 0 },
+    often: { density: "", amount: 0 },
+    color: "",
+    startDate: { day: 0, month: 0, year: 0 },
+    notification: { active: false, hour: 0, minute: 0 },
+    completion: [{ day: 0, month: 0, year: 0 }],
+  });
 
   useEffect(() => {
     if (editTaskRedux !== null) {
@@ -89,23 +65,27 @@ const Edit = () => {
   // }, []);
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground">
+    <div
+      key={renderKey}
+      className="w-full h-full flex flex-col md:flex-row items-center justify-center text-mainBackground"
+    >
       <div className="w-11/12 md:w-6/12 h-full md:h-4/6 lg:h-3/6 flex flex-col items-center justify-between relative">
-        <Title setValue={setTitle} value={title} />
-        <SelectCategory setValue={setCategory} value={category} />
-        <Type setValue={setMethod} />
-        <Often setValue={setOften} />
+        <Title setNewTask={setNewTask} oldTask={newTask} />
+        <SelectCategory setNewTask={setNewTask} oldTask={newTask} />
+        <Type setNewTask={setNewTask} oldTask={newTask} />
+        <Often setNewTask={setNewTask} oldTask={newTask} />
       </div>
       <div className="w-11/12 md:w-6/12 h-full md:h-4/6 lg:h-3/6 flex flex-col items-center justify-between">
-        <Color setValue={setColor} value={color} />
-        <StartDate setValue={setStartDate} />
-        <Notification setValue={setNotification} />
-        {showButtons ? (
+        <Color setNewTask={setNewTask} oldTask={newTask} />
+        <StartDate setNewTask={setNewTask} oldTask={newTask} />
+        <Notification setNewTask={setNewTask} oldTask={newTask} />
+        {showButtons && editTaskRedux ? (
           <div className="w-11/12 h-20 flex items-center justify-between">
-            <UpdateButton /> <DeleteButton taskId={editTaskRedux?.id} />
+            <UpdateButton taskId={editTaskRedux?.id} resetFunc={handleRender} />
+            <DeleteButton taskId={editTaskRedux?.id} resetFunc={handleRender} />
           </div>
         ) : (
-          <SaveButton newTask={newTask} />
+          <SaveButton oldTask={newTask} resetFunc={handleRender} />
         )}
       </div>
     </div>

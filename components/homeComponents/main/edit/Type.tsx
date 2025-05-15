@@ -1,10 +1,22 @@
-import { Dispatch, SetStateAction } from "react";
+import { Task } from "@/lib/types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface TypeProps {
-  setValue: Dispatch<SetStateAction<{ kind: string; quantity: number }>>;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const Type = ({ setValue }: TypeProps) => {
+const Type = ({ oldTask, setNewTask }: TypeProps) => {
+  const [value, setValue] = useState<{ kind: string; quantity: number }>(
+    oldTask.method
+  );
+
+  useEffect(() => {
+    setNewTask((prewTask: Task) => ({
+      ...prewTask,
+      method: value,
+    }));
+  }, [value]);
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly">
       <label

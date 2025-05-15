@@ -1,7 +1,12 @@
 import React from "react";
 import { MdChangeCircle } from "react-icons/md";
 
-const UpdateButton = () => {
+interface UpdateButtonProps {
+  taskId: string;
+  resetFunc: () => void;
+}
+
+const UpdateButton = ({ taskId, resetFunc }: UpdateButtonProps) => {
   return (
     <div className="w-9/12 h-20 flex items-end justify-center text-mainTextColor pb-2">
       <button

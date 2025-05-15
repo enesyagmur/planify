@@ -6,29 +6,32 @@ import { v4 as uuidv4 } from "uuid";
 import { IoAddCircle } from "react-icons/io5";
 
 interface SaveButtonProps {
-  newTask: Task | undefined;
+  oldTask: Task;
+  resetFunc: () => void;
 }
 
-const SaveButton = ({ newTask }: SaveButtonProps) => {
+const SaveButton = ({ oldTask, resetFunc }: SaveButtonProps) => {
   const [taskState, setTaskState] = useState<boolean>(false);
 
   const taskSendToDb = async () => {
-    if (newTask) {
+    if (oldTask) {
       const taskRef = collection(db, `users/${auth.currentUser?.uid}/tasks`);
       try {
         const docRef = await addDoc(taskRef, {
           id: uuidv4(),
-          title: newTask.title,
-          category: newTask.category,
-          method: newTask.method,
-          often: newTask.often,
-          color: newTask.color,
-          startDate: newTask.startDate,
-          notification: newTask.notification,
-          completion: newTask.completion,
+          title: oldTask.title,
+          category: oldTask.category,
+          method: oldTask.method,
+          often: oldTask.often,
+          color: oldTask.color,
+          startDate: oldTask.startDate,
+          notification: oldTask.notification,
+          completion: oldTask.completion,
         });
 
         console.log("Görev kayıt edildi");
+        resetFunc();
+
         const firebaseId = docRef.id;
 
         const updateRef = doc(
@@ -50,27 +53,27 @@ const SaveButton = ({ newTask }: SaveButtonProps) => {
 
   useEffect(() => {
     if (
-      newTask !== undefined &&
-      newTask.title !== "" &&
-      newTask.category !== "" &&
-      newTask.method.kind !== "" &&
-      newTask.method.quantity !== 0 &&
-      newTask.often.density !== "" &&
-      newTask.often.amount !== 0 &&
-      newTask.color !== "" &&
-      newTask.startDate.day !== -1 &&
-      newTask.startDate.month !== -1 &&
-      newTask.startDate.year !== -1
+      oldTask !== undefined &&
+      oldTask.title !== "" &&
+      oldTask.category !== "" &&
+      oldTask.method.kind !== "" &&
+      oldTask.method.quantity !== 0 &&
+      oldTask.often.density !== "" &&
+      oldTask.often.amount !== 0 &&
+      oldTask.color !== "" &&
+      oldTask.startDate.day !== 0 &&
+      oldTask.startDate.year !== 0
     ) {
       setTaskState(true);
     } else {
       setTaskState(false);
     }
-  }, [newTask]);
+  }, [oldTask]);
 
   return (
     <div className="w-full h-20 flex items-end justify-center text-secondTextColor pb-2">
       <button
+        type="submit"
         disabled={!taskState}
         className={`w-11/12 p-1 flex items-center justify-center rounded-md border-[1px] border-customYellow  cursor-not-allowed ${
           taskState ? "bg-darkBlue cursor-pointer text-mainTextColor" : ""

@@ -1,11 +1,23 @@
-import { Dispatch, SetStateAction } from "react";
+import { Task } from "@/lib/types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface CategoryProps {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const SelectCategory = ({ value, setValue }: CategoryProps) => {
+const SelectCategory = ({ oldTask, setNewTask }: CategoryProps) => {
+  const [inputCategory, setInputCategory] = useState<string>("");
+
+  useEffect(() => {
+    if (inputCategory) {
+      setNewTask((prewTask: Task) => ({
+        ...prewTask,
+        category: inputCategory,
+      }));
+    }
+  }, [inputCategory]);
+
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-evenly">
       <label
@@ -21,8 +33,7 @@ const SelectCategory = ({ value, setValue }: CategoryProps) => {
           name="category"
           className="w-full pl-2 rounded-sm h-7 capitalize"
           placeholder="Spor, Sağlık, Bakım vb."
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
+          onChange={(e) => setInputCategory(e.target.value)}
         />
       </div>
     </div>

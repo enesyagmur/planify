@@ -1,22 +1,23 @@
+import { Task } from "@/lib/types";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface NotificationProps {
-  setValue: Dispatch<SetStateAction<string>>;
+  oldTask: Task | undefined;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const Notification = ({ setValue }: NotificationProps) => {
-  const [selectCheck, setSelectCheck] = useState<boolean>(true);
-  const [hour, setHour] = useState<string>("");
-  const [minute, setMinute] = useState<string>("");
+const Notification = ({ oldTask, setNewTask }: NotificationProps) => {
+  const [selectCheck, setSelectCheck] = useState<boolean>(false);
+  const [hour, setHour] = useState<number>(-1);
+  const [minute, setMinute] = useState<number>(-1);
 
   useEffect(() => {
-    if (selectCheck) {
-      if (hour !== "" && minute !== "") {
-        setValue(`${hour}.${minute}`);
-      }
-    } else {
-      setValue("");
-    }
+    const newNotification = { active: selectCheck, hour: hour, minute: minute };
+
+    setNewTask((prewTask: Task) => ({
+      ...prewTask,
+      notification: newNotification,
+    }));
   }, [hour, minute, selectCheck]);
 
   return (
@@ -36,7 +37,7 @@ const Notification = ({ setValue }: NotificationProps) => {
           onClick={() => setSelectCheck(!selectCheck)}
           title="Bildirim Kapat / Aç"
         >
-          {selectCheck ? "🔊" : "🔈"}
+          {oldTask?.notification.active ? "🔊" : "🔈"}
         </button>
       </div>
       {selectCheck ? (
@@ -51,18 +52,20 @@ const Notification = ({ setValue }: NotificationProps) => {
 
           <div className="w-full h-7 flex items-center justify-end">
             <input
-              type="text"
+              type="number"
               name="hour"
               className="w-6/12 rounded-sm h-7 text-center"
               placeholder="Saat"
-              onChange={(e) => setHour(e.target.value)}
+              onChange={(e) => setHour(Number(e.target.value))}
+              value={oldTask?.notification.hour}
             />
             <input
-              type="text"
+              type="number"
               name="minute"
               className="w-6/12  rounded-sm h-7 text-center ml-1"
               placeholder="Dakika"
-              onChange={(e) => setMinute(e.target.value)}
+              onChange={(e) => setMinute(Number(e.target.value))}
+              value={oldTask?.notification.minute}
             />
           </div>
         </div>

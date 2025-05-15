@@ -1,17 +1,23 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Icon from "./Icon";
+import { Task } from "@/lib/types";
 
 interface TitleProps {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
 
-const Title = ({ value, setValue }: TitleProps) => {
+const Title = ({ oldTask, setNewTask }: TitleProps) => {
   const [icon, setIcon] = useState<string>("");
+  const [inputTitle, setInputTitle] = useState<string>("");
 
   useEffect(() => {
-    setValue(icon + value);
-  }, [icon]);
+    const newTitle = icon + inputTitle;
+    setNewTask((prewTask: Task) => ({
+      ...prewTask,
+      title: newTitle,
+    }));
+  }, [icon, inputTitle]);
 
   return (
     <div className="w-11/12 h-20 flex items-center justify-between">
@@ -27,8 +33,8 @@ const Title = ({ value, setValue }: TitleProps) => {
           type="text"
           name="title"
           className="input mt-2"
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
+          onChange={(e) => setInputTitle(e.target.value)}
+          value={oldTask?.title}
           placeholder="Görev İsmi"
         />
       </div>

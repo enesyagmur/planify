@@ -1,4 +1,5 @@
 import { db } from "@/lib/firebase";
+import { Task } from "@/lib/types";
 import { collection, getDocs } from "firebase/firestore";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -8,12 +9,12 @@ interface Color {
 }
 
 interface ColorProps {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  oldTask: Task;
+  setNewTask: Dispatch<SetStateAction<Task>>;
 }
-
-const Color = ({ value, setValue }: ColorProps) => {
+const Color = ({ oldTask, setNewTask }: ColorProps) => {
   const [colorList, setColorList] = useState<Color[]>([]);
+  const [selectedColor, setSelectedColor] = useState<string>(oldTask?.color);
 
   const fetchColors = async () => {
     if (colorList.length === 0) {
@@ -34,6 +35,15 @@ const Color = ({ value, setValue }: ColorProps) => {
     fetchColors();
   }, []);
 
+  useEffect(() => {
+    if (selectedColor) {
+      setNewTask((prewTask: Task) => ({
+        ...prewTask,
+        color: selectedColor,
+      }));
+    }
+  }, [selectedColor]);
+
   return (
     <div className="w-11/12 h-20 flex flex-col items-start justify-center ">
       <label
@@ -50,12 +60,12 @@ const Color = ({ value, setValue }: ColorProps) => {
             <button
               name="color"
               className={`color-button ${item.color}  ${
-                value === item.color
+                oldTask?.color === item.color
                   ? "border-[3px] border-secondTextColor"
                   : ""
               }`}
               key={item.id + item.color}
-              onClick={() => setValue(item.color)}
+              onClick={() => setSelectedColor(item.color)}
             ></button>
           ))}
       </div>

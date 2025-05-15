@@ -12,7 +12,9 @@ const WaitingTasks = ({ value }: WaitingTasksProps) => {
       <p className="collum-title">Bekleyen</p>
       <div className="task-list">
         {value &&
-          value.map((item, index) => <SingleTask key={index} task={item} />)}
+          value.map((item, index) => (
+            <SingleTask key={index} task={item} completion={false} />
+          ))}
       </div>
     </div>
   );

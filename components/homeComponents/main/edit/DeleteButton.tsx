@@ -1,14 +1,16 @@
 import { deleteTask } from "@/lib/deleteTask";
-import React from "react";
+
 import { TiDelete } from "react-icons/ti";
 
 interface DeleteButtonProps {
   taskId: string;
+  resetFunc: () => void;
 }
 
-const DeleteButton = ({ taskId }: DeleteButtonProps) => {
+const DeleteButton = ({ taskId, resetFunc }: DeleteButtonProps) => {
   const handleClick = async () => {
     await deleteTask(taskId);
+    resetFunc();
   };
   return (
     <div className="w-3/12 h-20 flex items-end justify-center text-mainTextColor pb-2">
