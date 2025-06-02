@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex items-center justify-center bg-mainBackground text-mainTextColor`}
       >
-        <div className="w-full  flex items-center justify-center ">
+        <div className="w-full flex items-center justify-center">
           <ReduxProvider>{children}</ReduxProvider>
         </div>
       </body>

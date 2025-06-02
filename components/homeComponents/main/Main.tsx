@@ -10,7 +10,7 @@ import { StoreRootState } from "@/redux/store";
 import { auth } from "@/lib/firebase";
 import takeUserTasks from "@/lib/takeUserTasks";
 import Create from "@/components/homeComponents/main/create/Create";
-import Update from "./update/Update";
+
 const Main = () => {
   const selectedComponent = useSelector(
     (state: StoreRootState) => state.componentState.current
@@ -27,7 +27,6 @@ const Main = () => {
       <Header />
       {selectedComponent === "tasks" ? <Tasks /> : null}
       {selectedComponent === "create" ? <Create /> : null}
-      {selectedComponent === "update" ? <Update /> : null}
       {selectedComponent === "dashboard" ? <Dashboard /> : null}
       {selectedComponent === "calender" ? <Calender /> : null}
     </div>
