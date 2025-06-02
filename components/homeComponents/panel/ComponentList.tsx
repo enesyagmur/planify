@@ -16,9 +16,14 @@ const ComponentList = () => {
       icon: "✅",
     },
     {
-      name: "edit",
-      title: "Düzenle",
-      icon: "✏️",
+      name: "create",
+      title: "Oluştur",
+      icon: "✒️",
+    },
+    {
+      name: "update",
+      title: "Güncelle",
+      icon: "🎨",
     },
     {
       name: "dashboard",

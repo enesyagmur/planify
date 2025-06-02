@@ -13,7 +13,7 @@ import SaveButton from "./SaveButton";
 import UpdateButton from "./UpdateButton";
 import DeleteButton from "./DeleteButton";
 
-const Edit = () => {
+const Create = () => {
   const [showButtons, setShowButtons] = useState<boolean>(false);
   const editTaskRedux = useSelector(
     (state: StoreRootState) => state.taksEdit.task
@@ -92,4 +92,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default Create;
