@@ -1,6 +1,5 @@
-import { auth } from "@/lib/firebase";
 import React from "react";
-import Logout from "../../authComponents/logout";
+import { FiBell } from "react-icons/fi";
 
 const Header = () => {
   const months: string[] = [
@@ -23,17 +22,25 @@ const Header = () => {
   const thisMonth = months[time.getMonth()];
 
   return (
-    <div className="w-full h-[87px] flex items-center justify-between  px-4 border-b-[1px] border-secondBackground">
-      <p className="md:ml-12 text-lg">
-        {thisDay} {thisMonth}
-      </p>
-      <div className="flex items-center justify-end w-6/12 ">
-        <p className="text-sm capitalize mr-2">
-          {auth.currentUser?.displayName}
-        </p>
-        <Logout />
+    <header className="sticky top-0 z-10 w-full h-16 md:h-20 flex items-center justify-between px-4 md:px-6 bg-secondBackground border-b border-thirdBackground">
+      {/* Sol Taraf - Mobil Menü Butonu ve Tarih */}
+      <div className="flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-2">
+          <div className="w-10 h-10 rounded-lg bg-themeColor/10 flex items-center justify-center">
+            <span className="text-themeColor font-medium">{thisDay}</span>
+          </div>
+          <p className="text-lg font-medium text-mainTextColor">{thisMonth}</p>
+        </div>
       </div>
-    </div>
+
+      {/* Sağ Taraf - Kullanıcı Bilgileri ve Bildirimler */}
+      <div className="flex items-center space-x-3 md:space-x-4">
+        <button className="p-2 rounded-full text-secondTextColor hover:bg-thirdBackground hover:text-mainTextColor relative">
+          <FiBell size={20} />
+          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-themeColor"></span>
+        </button>
+      </div>
+    </header>
   );
 };
 

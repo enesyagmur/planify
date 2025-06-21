@@ -23,24 +23,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        mainBackground: "#252527",
-        secondBackground: "#36353a",
-        thirdBackground: "#444446",
+        // Ana arka planlar (Landing page temasına uygun)
+        mainBackground: "#1A1A1A", // Orijinal: #252527
+        secondBackground: "#2A2A2A", // Orijinal: #36353a
+        thirdBackground: "#3A3A3A", // Orijinal: #444446
 
-        themeColor: "#c8fe2d",
+        // Tema rengi (Landing page moruna uygun)
+        themeColor: "#7E42FF", // Orijinal: #c8fe2d
 
-        mainBlue: "#3b82f6",
-        darkBlue: "#1d4ed8",
-        lightBlue: "#60a5fa",
+        // Mavi tonları (biraz daha koyu)
+        mainBlue: "#2563EB", // Orijinal: #3b82f6
+        darkBlue: "#1E40AF", // Orijinal: #1d4ed8
+        lightBlue: "#3B82F6", // Orijinal: #60a5fa
 
-        mainGreen: "#22c55e",
-        darkGreen: "#15803d",
-        lightGreen: "#4ade80",
+        // Yeşil tonları (biraz daha koyu)
+        mainGreen: "#16A34A", // Orijinal: #22c55e
+        darkGreen: "#14532D", // Orijinal: #15803d
+        lightGreen: "#22C55E", // Orijinal: #4ade80
 
-        mainTextColor: "#fbfbfd",
-        secondTextColor: "#dfdfe3",
-        dangerRed: "#ef4444",
-        infoYellow: "#facc15",
+        // Metin renkleri (Landing page temasına uygun)
+        mainTextColor: "#F0F0F0", // Orijinal: #fbfbfd
+        secondTextColor: "#A0A0A0", // Orijinal: #dfdfe3
+
+        // Durum renkleri (aynı kaldı)
+        dangerRed: "#EF4444", // Orijinal: #ef4444
+        infoYellow: "#FACC15", // Orijinal: #facc15
       },
     },
   },

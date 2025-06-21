@@ -5,8 +5,9 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { FcGoogle } from "react-icons/fc";
 
-const Login = () => {
+const LoginWithGoogle = () => {
   const router = useRouter();
 
   const loginFunc = async () => {
@@ -29,10 +30,8 @@ const Login = () => {
             tasks: {},
             createdAt: new Date(),
           });
-          console.log("Yeni kullanıcı kaydedildi.");
         }
-        router.push("/home");
-        console.log("Google ile giriş yapıldı.");
+        router.push("/tasks");
       }
     } catch (err) {
       console.log("Google ile girişte hata: ", err);
@@ -40,10 +39,15 @@ const Login = () => {
   };
 
   return (
-    <div className="w-[400px] md:w-[500px] bg-secondBackground h-[650px] rounded-lg shadow-sm shadow-borderLine">
-      <button onClick={loginFunc}>Google</button>
-    </div>
+    <button
+      type="button"
+      onClick={loginFunc}
+      className="w-full py-3 px-6 rounded-xl font-medium flex items-center justify-center space-x-3 transition-all duration-300 hover:bg-thirdBackground border border-thirdBackground"
+    >
+      <FcGoogle className="w-6 h-6" />
+      <span className="text-mainTextColor">Google ile giriş yap</span>
+    </button>
   );
 };
 
-export default Login;
+export default LoginWithGoogle;
