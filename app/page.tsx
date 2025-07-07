@@ -34,7 +34,7 @@ export default function Landing() {
           organize edin ve detaylı performans takibiyle hedeflerinize ulaşın.
         </p>
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <Link href="/signup" passHref>
+          <Link href="/auth" passHref>
             <button className="px-8 py-4 text-lg font-semibold rounded-lg bg-[#7E42FF] text-white hover:bg-[#6A37DB] transition shadow-lg">
               Hemen Başla
             </button>
@@ -111,7 +111,7 @@ export default function Landing() {
           Planify ile görevlerinizi kontrol altına alın, hedeflerinize daha
           hızlı ulaşın.
         </p>
-        <Link href="/login" passHref>
+        <Link href="/auth" passHref>
           <button className="px-10 py-5 text-xl font-bold rounded-lg bg-[#7E42FF] text-white hover:bg-[#6A37DB] transition shadow-lg">
             Şimdi Ücretsiz Kayıt Ol
           </button>
