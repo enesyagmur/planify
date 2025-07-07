@@ -1,17 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Mail, Lock, Chrome } from "lucide-react";
+import { loginUser } from "../../features/auth/authService";
 
 export default function LoginForm({ onToggle }) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login:", { email, password });
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await loginUser(email, password);
+      if (typeof result === "string") {
+        // Hata durumu
+        setError(result);
+      } else {
+        router.push("/tasks");
+      }
+    } catch (error) {
+      setError(`Giriş yapılırken bir hata oluştu: ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -19,6 +38,12 @@ export default function LoginForm({ onToggle }) {
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-2">Giriş Yap</h2>
       </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+          <p className="text-red-400 text-sm">{error}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
@@ -35,6 +60,7 @@ export default function LoginForm({ onToggle }) {
               onChange={(e) => setEmail(e.target.value)}
               className="pl-12 pr-4 py-3 w-full rounded-lg bg-gray-800/70 dark:bg-gray-700/60 border border-gray-700 dark:border-gray-600 shadow-md text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 transition-colors duration-200 outline-none"
               required
+              disabled={loading}
             />
           </div>
         </div>
@@ -53,11 +79,13 @@ export default function LoginForm({ onToggle }) {
               onChange={(e) => setPassword(e.target.value)}
               className="pl-12 pr-12 py-3 w-full rounded-lg bg-gray-800/70 dark:bg-gray-700/60 border border-gray-700 dark:border-gray-600 shadow-md text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 transition-colors duration-200 outline-none"
               required
+              disabled={loading}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+              disabled={loading}
             >
               {showPassword ? (
                 <EyeOff className="w-5 h-5" />
@@ -73,12 +101,14 @@ export default function LoginForm({ onToggle }) {
             <input
               type="checkbox"
               className="w-4 h-4 text-purple-600 bg-gray-800 border-gray-600 rounded focus:ring-purple-500"
+              disabled={loading}
             />
             <span className="text-gray-300">Beni hatırla</span>
           </label>
           <button
             type="button"
             className="text-sm text-purple-400 hover:text-purple-300"
+            disabled={loading}
           >
             Şifremi unuttum
           </button>
@@ -86,9 +116,10 @@ export default function LoginForm({ onToggle }) {
 
         <button
           type="submit"
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5"
+          disabled={loading}
+          className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-600/50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg transition-colors duration-200"
         >
-          Giriş Yap
+          {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
         </button>
       </form>
 
@@ -101,33 +132,10 @@ export default function LoginForm({ onToggle }) {
       <div className="space-y-3">
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-2 border border-gray-700 dark:border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent rounded-lg py-2.5 shadow-md transition-colors duration-200"
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-2 border border-gray-700 dark:border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent rounded-lg py-2.5 shadow-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg
-            className="w-5 h-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g>
-              <path
-                d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148 0-3.359 2.75-6.148 6.125-6.148 1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.703-1.57-3.906-2.539-6.656-2.539-5.523 0-10 4.477-10 10s4.477 10 10 10 9.594-4.055 9.594-9.773 0-.656-.07-1.156-.156-1.625z"
-                fill="#FFC107"
-              />
-              <path
-                d="M3.152 7.345l3.289 2.414c.891-1.789 2.578-2.961 4.594-2.961 1.125 0 2.188.391 3.008 1.039l2.844-2.773c-1.703-1.57-3.906-2.539-6.656-2.539-3.828 0-7.07 2.484-8.406 5.961z"
-                fill="#FF3D00"
-              />
-              <path
-                d="M12 22c2.672 0 4.922-.883 6.563-2.406l-3.047-2.492c-.844.633-2.008 1.078-3.516 1.078-2.828 0-5.219-1.914-6.078-4.477l-3.242 2.5c1.516 3.477 4.758 5.797 8.32 5.797z"
-                fill="#4CAF50"
-              />
-              <path
-                d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148 0-.547.07-1.078.172-1.578l-3.289-2.414c-.422.844-.664 1.789-.664 2.992 0 5.523 4.477 10 10 10 5.781 0 9.594-4.055 9.594-9.773 0-.656-.07-1.156-.156-1.625z"
-                fill="#1976D2"
-              />
-            </g>
-          </svg>
+          <Chrome className="w-5 h-5" />
           Google ile devam et
         </button>
       </div>
@@ -137,7 +145,8 @@ export default function LoginForm({ onToggle }) {
           Hesabınız yok mu?{" "}
           <button
             onClick={onToggle}
-            className="text-purple-400 hover:text-purple-300 font-medium"
+            disabled={loading}
+            className="text-purple-400 hover:text-purple-300 font-medium disabled:opacity-50"
           >
             Kayıt ol
           </button>
