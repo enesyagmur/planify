@@ -24,6 +24,7 @@ export const fetchCategoriesThunk = createAsyncThunk(
   async (userId, thunkAPI) => {
     try {
       const categories = await getCategoriesService(userId);
+      return categories;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }

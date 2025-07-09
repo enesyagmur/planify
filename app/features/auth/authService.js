@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 import { addDoc, doc, setDoc } from "firebase/firestore";

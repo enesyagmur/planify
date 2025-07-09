@@ -1,9 +1,9 @@
-import { auth } from "../../lib/firebase";
 import { User } from "lucide-react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-  const userName = auth.currentUser?.displayName;
+  const { user, loading } = useSelector((state) => state.authState);
   return (
     <header
       className="
@@ -22,7 +22,7 @@ const Header = () => {
       >
         <User className="w-6 h-6 text-purple-400" />
         <span className="text-gray-100 font-medium hidden sm:inline">
-          {userName}
+          {user?.displayName}
         </span>
       </Link>
     </header>

@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import CategoryList from "../../components/categoryComponents/CategoryList";
 import NewCategoryModal from "../../components/categoryComponents/NewCategoryModal";
 import { auth } from "../../lib/firebase";
+import { useSelector } from "react-redux";
 
 const Category = () => {
   const [showModal, setShowModal] = useState(false);
-  const userId = auth.currentUser?.uid;
+  const { user, loading } = useSelector((state) => state.authState);
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 py-8">
@@ -25,11 +26,14 @@ const Category = () => {
       </div>
 
       {/* Kategori Listesi */}
-      <CategoryList userId={userId} />
+      {user?.uid && <CategoryList userId={user?.uid} />}
 
       {/* Yeni Kategori Modalı */}
       {showModal && (
-        <NewCategoryModal onClose={() => setShowModal(false)} userId={userId} />
+        <NewCategoryModal
+          onClose={() => setShowModal(false)}
+          userId={user?.uid}
+        />
       )}
 
       {/* Modal arka planına tıklayınca kapatma */}
