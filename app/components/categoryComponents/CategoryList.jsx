@@ -19,7 +19,8 @@ const CategoryList = ({ userId }) => {
     };
 
     fetchCategories();
-  }, [userId, categoryState]);
+  }, [userId, dispatch]); // categoryState dependency'sini kaldırdık
+
   return (
     <div className="w-full max-w-2xl mx-auto mt-6 px-2">
       {categoryState.categories?.length === 0 ? (

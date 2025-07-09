@@ -36,7 +36,9 @@ const NewCategoryModal = ({ onClose, userId }) => {
       const data = { userId: userId, category: category };
 
       const result = await dispatch(addNewCategoryThunk(data)).unwrap();
-      onClose();
+      if (result) {
+        onClose;
+      }
     } catch (err) {
       throw new Error(err);
     }

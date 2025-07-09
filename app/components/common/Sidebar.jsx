@@ -100,7 +100,7 @@ const Sidebar = () => {
           <span className="w-6 h-6">
             <LogOut />
           </span>
-          {!collapsed && <span>Çıkış</span>}
+          {!collapsed && <span className="text-white">Çıkış</span>}
         </Link>
       </div>
 

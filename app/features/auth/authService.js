@@ -5,8 +5,8 @@ import {
   updateProfile,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../../lib/firebase";
-import { addDoc, doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 // Kullanıcı kayıt işlemi
 export const registerUser = async (name, email, password) => {
@@ -27,7 +27,8 @@ export const registerUser = async (name, email, password) => {
       email: user.email,
       createdAt: new Date().toISOString(),
       categories: [],
-      tasks: [],
+      taskTemplates: [],
+      taskHistory: {},
     };
 
     await setDoc(userDocRef, newUser);

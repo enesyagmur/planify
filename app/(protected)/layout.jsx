@@ -1,13 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-
 import Sidebar from "../components/common/Sidebar";
 import Header from "../components/common/Header";
 
 export default function MainLayout({ children }) {
-  const pathname = usePathname();
-
   return (
     <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar */}

@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import CategoryList from "../../components/categoryComponents/CategoryList";
 import NewCategoryModal from "../../components/categoryComponents/NewCategoryModal";
-import { auth } from "../../lib/firebase";
 import { useSelector } from "react-redux";
 
 const Category = () => {
