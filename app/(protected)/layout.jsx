@@ -2,11 +2,10 @@
 
 import { usePathname } from "next/navigation";
 
-import { LayoutDashboard, CheckCircle, Calendar, Settings } from "lucide-react";
 import Sidebar from "../components/common/Sidebar";
 import Header from "../components/common/Header";
 
-export default function DashboardLayout({ children }) {
+export default function MainLayout({ children }) {
   const pathname = usePathname();
 
   return (

@@ -1,5 +1,8 @@
-import { createNewCategoryService } from "../../features/category/categoryService";
+"use client";
+
+import { useDispatch } from "react-redux";
 import React, { useState } from "react";
+import { addNewCategoryThunk } from "../../features/category/categoryThunk";
 
 // Mock renkler
 const colors = [
@@ -19,6 +22,7 @@ const NewCategoryModal = ({ onClose, userId }) => {
     name: "",
     color: "bg-purple-700",
   });
+  const dispatch = useDispatch();
 
   const addCategory = async (e) => {
     e.preventDefault();
@@ -28,9 +32,10 @@ const NewCategoryModal = ({ onClose, userId }) => {
           "NewCategoryModal | Kategori oluşturma hatası: bilgiler eksik"
         );
       }
-      console.log("addCategory çalıştı");
 
-      const result = await createNewCategoryService(userId, category);
+      const data = { userId: userId, category: category };
+
+      const result = await dispatch(addNewCategoryThunk(data)).unwrap();
       onClose();
     } catch (err) {
       throw new Error(err);
