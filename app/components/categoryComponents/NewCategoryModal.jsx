@@ -1,15 +1,42 @@
-import React from "react";
+import { createNewCategoryService } from "../../features/category/categoryService";
+import React, { useState } from "react";
 
 // Mock renkler
 const colors = [
-  "bg-purple-600",
-  "bg-pink-500",
-  "bg-green-500",
-  "bg-yellow-500",
-  "bg-blue-500",
+  "bg-pink-700",
+  "bg-green-700",
+  "bg-yellow-600",
+  "bg-blue-700",
+  "bg-cyan-500",
+  "bg-rose-500",
+  "bg-indigo-700",
+  "bg-emerald-600",
+  "bg-orange-600",
 ];
 
-const NewCategoryModal = ({ onClose }) => {
+const NewCategoryModal = ({ onClose, userId }) => {
+  const [category, setCategory] = useState({
+    name: "",
+    color: "bg-purple-700",
+  });
+
+  const addCategory = async (e) => {
+    e.preventDefault();
+    try {
+      if (!category.name || !category.color === "bg-purple-700") {
+        throw new Error(
+          "NewCategoryModal | Kategori oluşturma hatası: bilgiler eksik"
+        );
+      }
+      console.log("addCategory çalıştı");
+
+      const result = await createNewCategoryService(userId, category);
+      onClose();
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Arka plan */}
@@ -22,12 +49,12 @@ const NewCategoryModal = ({ onClose }) => {
       <form
         className="relative z-10 bg-gray-900 dark:bg-black rounded-2xl shadow-xl p-6 w-full max-w-md mx-2 transition border border-gray-800"
         autoComplete="off"
-        onClick={(e) => e.stopPropagation()}
+        onSubmit={addCategory}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-purple-500 dark:hover:text-purple-400 text-2xl font-bold focus:outline-none transition"
+          className={`absolute top-3 right-3 text-gray-400 hover:text-white  text-2xl font-bold focus:outline-none transition`}
           aria-label="Kapat"
         >
           ×
@@ -40,15 +67,17 @@ const NewCategoryModal = ({ onClose }) => {
             className="block text-gray-300 font-medium mb-1"
             htmlFor="categoryName"
           >
-            Kategori İsmi <span className="text-purple-500">*</span>
+            Kategori İsmi
           </label>
           <input
             id="categoryName"
             type="text"
-            className="w-full px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 transition"
+            className={`w-full px-3 py-2 capitalize rounded-lg border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition`}
             placeholder="Kategori adını girin"
-            value=""
-            readOnly
+            value={category.name}
+            onChange={(e) =>
+              setCategory((prev) => ({ ...prev, name: e.target.value }))
+            }
           />
         </div>
         <div className="mb-8">
@@ -57,15 +86,18 @@ const NewCategoryModal = ({ onClose }) => {
             {colors.map((color, idx) => (
               <span
                 key={idx}
-                className={`w-7 h-7 rounded-full border-2 border-gray-700 ${color} cursor-not-allowed`}
+                className={`w-7 h-7 rounded-full border-2 border-gray-700 ${color} cursor-pointer`}
                 title={color}
+                onClick={() =>
+                  setCategory((prev) => ({ ...prev, color: color }))
+                }
               />
             ))}
           </div>
         </div>
         <button
-          type="button"
-          className="w-full py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold transition shadow-md cursor-not-allowed opacity-70"
+          type="submit"
+          className={`w-full py-2 rounded-lg ${category.color}  text-gray-200 hover:text-white font-semibold transition shadow-md cursor-pointer  opacity-70 hover:opacity-100`}
         >
           Kaydet
         </button>

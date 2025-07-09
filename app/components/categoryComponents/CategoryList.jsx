@@ -9,7 +9,7 @@ const categories = [
   { id: 4, name: "Alışveriş", color: "bg-yellow-500" },
 ];
 
-const CategoryList = () => {
+const CategoryList = ({ userId }) => {
   return (
     <div className="w-full max-w-2xl mx-auto mt-6 px-2">
       {categories.length === 0 ? (

@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import CategoryList from "../../components/categoryComponents/CategoryList";
 import NewCategoryModal from "../../components/categoryComponents/NewCategoryModal";
+import { auth } from "../../lib/firebase";
 
 const Category = () => {
   const [showModal, setShowModal] = useState(false);
+  const userId = auth.currentUser?.uid;
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 py-8">
@@ -23,10 +25,12 @@ const Category = () => {
       </div>
 
       {/* Kategori Listesi */}
-      <CategoryList />
+      <CategoryList userId={userId} />
 
       {/* Yeni Kategori Modalı */}
-      {showModal && <NewCategoryModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <NewCategoryModal onClose={() => setShowModal(false)} userId={userId} />
+      )}
 
       {/* Modal arka planına tıklayınca kapatma */}
       {showModal && (
