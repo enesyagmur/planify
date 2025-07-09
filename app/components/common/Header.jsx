@@ -1,9 +1,9 @@
+import { auth } from "../../lib/firebase";
 import { User } from "lucide-react";
 import Link from "next/link";
 
-const userName = "Ahmet Yılmaz";
-
 const Header = () => {
+  const userName = auth.currentUser?.displayName;
   return (
     <header
       className="

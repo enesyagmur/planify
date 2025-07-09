@@ -14,7 +14,9 @@ const CategoryItem = ({ category }) => {
         <span
           className={`w-4 h-4 rounded-full ${category.color} border-2 border-gray-900`}
         />
-        <span className="text-white font-medium">{category.name}</span>
+        <span className="text-white font-medium capitalize">
+          {category.name}
+        </span>
       </div>
       {/* İleride düzenle/sil butonları eklenebilir */}
     </div>

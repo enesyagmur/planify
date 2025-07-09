@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CategoryItem from "./CategoryItem";
+import { getCategoriesService } from "../../features/category/categoryService";
 
 // Mock kategori verisi
-const categories = [
-  { id: 1, name: "İş", color: "bg-purple-600" },
-  { id: 2, name: "Kişisel", color: "bg-pink-500" },
-  { id: 3, name: "Sağlık", color: "bg-green-500" },
-  { id: 4, name: "Alışveriş", color: "bg-yellow-500" },
-];
 
 const CategoryList = ({ userId }) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (!userId) {
+        throw new Error("CategoryList | Kullanıcı Id eksik");
+      }
+      const result = await getCategoriesService(userId);
+      if (result) {
+        setCategories(result);
+      }
+    };
+
+    fetchCategories();
+  }, [userId]);
   return (
     <div className="w-full max-w-2xl mx-auto mt-6 px-2">
       {categories.length === 0 ? (
