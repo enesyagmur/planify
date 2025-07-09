@@ -30,7 +30,11 @@ export default function RegisterForm({ onToggle }) {
     }
 
     try {
-      const result = await registerUser(formData.email, formData.password);
+      const result = await registerUser(
+        formData.name,
+        formData.email,
+        formData.password
+      );
 
       if (result) {
         router.push("/tasks");
