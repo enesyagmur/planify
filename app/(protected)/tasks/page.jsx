@@ -11,7 +11,7 @@ import TaskHistory from "../../components/tasksComponents/TaskHistory";
 const Tasks = () => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [selectTaskModal, setSelectTaskModal] = useState(false);
-  const [taskTemplatesShow, setTaskTemplatesShow] = useState(true);
+  const [taskTemplatesShow, setTaskTemplatesShow] = useState(false);
   const [taskHistoryShow, setTaskHistoryShow] = useState(false);
 
   const { user, loading } = useSelector((state) => state.authState);
@@ -27,7 +27,9 @@ const Tasks = () => {
         <div className="w-6/12 h-full flex items-center justify-end">
           <button
             onClick={() => setTaskTemplatesShow(true)}
-            className="flex items-center gap-2 px-4 py-2 mr-2 rounded-lg border-2 border-purple-500 hover:bg-purple-700  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className={`flex items-center gap-2 px-4 py-2 mr-2 rounded-lg border-2 border-purple-500 hover:bg-purple-700 ${
+              taskTemplatesShow && "bg-purple-600"
+            }  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400`}
           >
             <span className="text-lg">
               <LayoutList />
