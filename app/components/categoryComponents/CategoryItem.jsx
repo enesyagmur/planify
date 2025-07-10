@@ -3,10 +3,10 @@ import React from "react";
 const CategoryItem = ({ category }) => {
   return (
     <div
-      className={`w-96
+      className={`w-[350px] h-[150px]
     relative flex items-center justify-between
-    bg-gray-900/60 backdrop-blur-sm rounded-2xl shadow-xl p-5 mb-4
-    border border-gray-800 hover:border-purple-500/40
+    bg-neutral-900/60 backdrop-blur-sm rounded-2xl shadow-xl p-5 mb-4
+    border border-neutral-800 hover:border-purple-500/40
     transition-all duration-300 hover:shadow-purple-500/20
     hover:scale-[1.02] group cursor-pointer
     before:absolute before:inset-0 before:rounded-2xl 

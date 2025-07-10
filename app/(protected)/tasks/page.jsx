@@ -1,5 +1,5 @@
 "use client";
-import NewTaskModal from "../../components/tasksComponents/NewTaskModal";
+import NewTemplateModal from "../../components/tasksComponents/NewTemplateModal";
 import React, { useState } from "react";
 import { LayoutList } from "lucide-react";
 import { BadgePlus } from "lucide-react";
@@ -9,7 +9,7 @@ import TaskTemplates from "../../components/tasksComponents/TaskTemplates";
 import TodayTasks from "../../components/tasksComponents/TodayTasks";
 
 const Tasks = () => {
-  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [showNewTemplateModal, setShowNewTemplateModal] = useState(false);
   const [selectTaskModal, setSelectTaskModal] = useState(false);
   const [taskTemplatesShow, setTaskTemplatesShow] = useState(false);
 
@@ -41,7 +41,7 @@ const Tasks = () => {
             <span>Görev Seç</span>
           </button>
           <button
-            onClick={() => setShowNewTaskModal(true)}
+            onClick={() => setShowNewTemplateModal(true)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-purple-300 hover:bg-purple-700  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <span className="text-lg">
@@ -59,9 +59,9 @@ const Tasks = () => {
       {user?.uid && !taskTemplatesShow && <TodayTasks userId={user.uid} />}
 
       {/* Yeni Görev Modalı */}
-      {showNewTaskModal && (
-        <NewTaskModal
-          onClose={() => setShowNewTaskModal(false)}
+      {showNewTemplateModal && (
+        <NewTemplateModal
+          onClose={() => setShowNewTemplateModal(false)}
           userId={user.uid}
         />
       )}
@@ -74,7 +74,7 @@ const Tasks = () => {
       )}
 
       {/* Modal arka planına tıklayınca kapatma */}
-      {showNewTaskModal ||
+      {showNewTemplateModal ||
         (selectTaskModal && (
           <div
             className="fixed inset-0 z-40"

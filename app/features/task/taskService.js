@@ -7,6 +7,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 //TEMPLATE---------------------------------------------------
 export const addNewTaskTemplateService = async (userId, newTask) => {
@@ -108,7 +109,15 @@ export const useTemplateService = async (userId, template) => {
     const taskHistory = userData.taskHistory || {};
 
     const todaysTasks = taskHistory[todayKey] || [];
-    todaysTasks.push(template);
+
+    // Template'i task'a dönüştür
+    const newTask = {
+      ...template,
+      templateId: template.id, // template'in orijinal id'si
+      id: uuidv4(), // yeni task id
+    };
+
+    todaysTasks.push(newTask);
 
     taskHistory[todayKey] = todaysTasks;
 
@@ -141,6 +150,9 @@ export const getTodayTasksService = async (userId) => {
     const taskHistory = userData.taskHistory || {};
     const todayTasks = taskHistory[todayKey] || [];
 
+    // todayTasks içindeki id'leri al
+    const todayTaskIds = new Set(todayTasks.map((task) => task.id));
+
     // Tüm taskTemplate'leri çek
     const templatesColRef = collection(db, `users/${userId}/taskTemplates`);
     const templatesSnapShot = await getDocs(templatesColRef);
@@ -148,13 +160,13 @@ export const getTodayTasksService = async (userId) => {
       ? []
       : templatesSnapShot.docs.map((doc) => doc.data());
 
-    // isRecurring olanları filtrele
-    const recurringTemplates = taskTemplates.filter(
-      (template) => template.isRecurring
+    // isRecurring olanları ve todayTasks'ta olmayanları filtrele
+    const newRecurringTemplates = taskTemplates.filter(
+      (template) => template.isRecurring && !todayTaskIds.has(template.id)
     );
 
-    // todayTasks ve recurringTemplates birleştir
-    const mergedTasks = [...todayTasks, ...recurringTemplates];
+    // Sadece eksik olanları ekle
+    const mergedTasks = [...todayTasks, ...newRecurringTemplates];
 
     // Firestore'u güncelle
     taskHistory[todayKey] = mergedTasks;

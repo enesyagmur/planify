@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initialTaskState, taskReducer } from "./taskReducer";
 import { addNewTaskTemplateThunk } from "../../features/task/taskThunk";
 
-const NewTaskModal = ({ onClose, userId }) => {
+const NewTemplateModal = ({ onClose, userId }) => {
   const { categories, loading, error } = useSelector(
     (state) => state.categoryState
   );
@@ -32,10 +32,12 @@ const NewTaskModal = ({ onClose, userId }) => {
       );
       const newTask = {
         name: formState.name,
+        description: formState.description,
         category: findCategory,
         completionType: formState.completionType,
         duration: formState.duration,
         completed: formState.completed,
+        isRecurring: formState.isRecurring,
       };
 
       const data = { userId: userId, newTask: newTask };
@@ -285,6 +287,6 @@ const NewTaskModal = ({ onClose, userId }) => {
   );
 };
 
-export default NewTaskModal;
+export default NewTemplateModal;
 
 //verileri reducer ile yakalayacağım

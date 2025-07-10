@@ -28,7 +28,7 @@ const CategoryList = ({ userId }) => {
           Henüz bir kategori yok.
         </div>
       ) : (
-        <div className="w-full flex flex-wrap items-center justify-evenly">
+        <div className="w-full h-[500px] overflow-y-auto flex flex-wrap items-center justify-evenly">
           {categories?.map((cat) => (
             <CategoryItem key={cat.id} category={cat} />
           ))}
