@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTodayTasksThunk } from "../../features/task/taskThunk";
 import TaskItem from "./TaskItem";
+import { Timer } from "lucide-react";
 
 const TodayTasks = ({ userId }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,24 @@ const TodayTasks = ({ userId }) => {
   // Görevleri tamamlanma durumuna göre ayır
   const completedTasks =
     todayTasks?.filter((task) => task.completed || task.isCompleted) || [];
+  //toplam süre hesaplama
+  const totalDuration = completedTasks.reduce(
+    (sum, task) => sum + Number(task.duration || 0),
+    0
+  );
+
+  const hours = Math.floor(totalDuration / 60);
+  const minutes = totalDuration % 60;
+
+  let time = "";
+  if (hours > 0 && minutes > 0) {
+    time = `${hours} Saat ${minutes} Dakika`;
+  } else if (hours > 0) {
+    time = `${hours} Saat`;
+  } else {
+    time = `${minutes} Dakika`;
+  }
+
   const incompleteTasks =
     todayTasks?.filter((task) => !task.completed && !task.isCompleted) || [];
 
@@ -68,6 +87,21 @@ const TodayTasks = ({ userId }) => {
                 <h2 className="text-xl font-semibold text-white">Tamamlanan</h2>
                 <span className="ml-2 bg-green-600 text-white px-2 py-1 rounded-full text-sm">
                   {completedTasks.length}
+                </span>
+                <span
+                  className="
+    flex items-center gap-2
+    px-4 py-2
+    bg-white dark:bg-zinc-900
+    rounded-lg shadow-md
+    text-zinc-800 dark:text-zinc-100
+    font-semibold text-lg
+    transition
+  "
+                  aria-label="Tamamlanan görevlerin toplam süresi"
+                >
+                  <Timer className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <span>{time}</span>
                 </span>
               </div>
               <div className="space-y-3">

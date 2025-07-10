@@ -1,5 +1,5 @@
 import React from "react";
-import { Check, Clock } from "lucide-react";
+import { Check, Clock, Flame, Trophy } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { taskCompleteThunk } from "../../features/task/taskThunk";
 
@@ -24,10 +24,10 @@ const TaskItem = ({ task, userId }) => {
   return (
     <div
       className={`
-        relative flex flex-col gap-3 bg-neutral-800  rounded-lg shadow-md p-5 mb-4 border border-neutral-800
-        transition-all duration-300 hover:shadow-xl hover:border-purple-600/60 group
-        ${task.completed ? "opacity-60" : "hover:bg-neutral-800/80"}
-      `}
+      relative flex flex-col gap-3 bg-neutral-800  rounded-lg shadow-md p-5 mb-4 border border-neutral-800
+      transition-all duration-300 hover:shadow-xl hover:border-purple-600/60 group
+      ${task.completed ? "opacity-60" : "hover:bg-neutral-800/80"}
+    `}
       aria-label={`Görev: ${task.name}`}
     >
       {/* Üst kısım: Başlık ve Checkbox */}
@@ -36,14 +36,14 @@ const TaskItem = ({ task, userId }) => {
           {/* Checkbox */}
           <button
             className={`
-              w-6 h-6 flex items-center justify-center rounded-full border-2 transition-all duration-200
-              ${
-                task.completed
-                  ? "bg-green-500 border-green-500"
-                  : "border-purple-500 hover:border-purple-400 bg-gray-900"
-              }
-              focus:outline-none focus:ring-2 focus:ring-purple-500
-            `}
+            w-6 h-6 flex items-center justify-center rounded-full border-2 transition-all duration-200
+            ${
+              task.completed
+                ? "bg-green-500 border-green-500"
+                : "border-purple-500 hover:border-purple-400 bg-gray-900"
+            }
+            focus:outline-none focus:ring-2 focus:ring-purple-500
+          `}
             aria-label={task.completed ? "Tamamlandı" : "Devam Ediyor"}
             onClick={handleComplete}
           >
@@ -51,13 +51,17 @@ const TaskItem = ({ task, userId }) => {
               <Check size={16} className="text-white" strokeWidth={3} />
             )}
           </button>
+
           {/* Başlık */}
           <h3
-            className={`text-lg capitalize font-semibold truncate transition-all duration-200 ${
+            className={`
+            text-lg capitalize font-semibold truncate transition-all duration-200
+            ${
               task.completed
                 ? "line-through text-gray-500"
                 : "text-white group-hover:text-purple-100"
-            }`}
+            }
+          `}
           >
             {task.name}
           </h3>
@@ -79,8 +83,9 @@ const TaskItem = ({ task, userId }) => {
             </span>
           </div>
         )}
+
         {/* Süre */}
-        {task.duration && (
+        {task.duration > 0 && (
           <div className="flex items-center gap-1">
             <Clock size={14} className="text-gray-500" />
             <span className="text-sm text-gray-400 dark:text-gray-300">
@@ -88,17 +93,36 @@ const TaskItem = ({ task, userId }) => {
             </span>
           </div>
         )}
+
+        {/* Güncel streak */}
+
+        <div className="flex items-center gap-1">
+          <Flame size={14} className="text-orange-500" />
+          <span className="text-sm text-gray-300">
+            {task.currentStreak} gün
+          </span>
+        </div>
+
+        {/* Streak rekoru */}
+
+        <div className="flex items-center gap-1">
+          <Trophy size={14} className="text-yellow-500" />
+          <span className="text-sm text-gray-300">
+            Rekor: {task.streakRecord}
+          </span>
+        </div>
+
         {/* Durum badge'i */}
         <span
           className={`
-            px-3 py-1 rounded-full text-xs font-medium ml-auto
-            transition-all duration-200 shadow-sm
-            ${
-              task.completed
-                ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                : "bg-purple-600/20 text-purple-400 border border-purple-500/30 dark:bg-purple-500/20"
-            }
-          `}
+          px-3 py-1 rounded-full text-xs font-medium ml-auto
+          transition-all duration-200 shadow-sm
+          ${
+            task.completed
+              ? "bg-green-500/20 text-green-400 border border-green-500/30"
+              : "bg-purple-600/20 text-purple-400 border border-purple-500/30 dark:bg-purple-500/20"
+          }
+        `}
         >
           {task.completed ? "Tamamlandı" : "Devam Ediyor"}
         </span>

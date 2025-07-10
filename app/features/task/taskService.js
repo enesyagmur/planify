@@ -128,20 +128,39 @@ export const getTodayTasksService = async (userId) => {
       throw new Error("SERVICE | Kullanıcı ID eksik");
     }
 
-    const today = new Date();
-    const todayKey = today.toISOString().slice(0, 10);
-
     const userDocRef = doc(db, `users/${userId}`);
     const userDocSnap = await getDoc(userDocRef);
     if (!userDocSnap.exists()) {
       throw new Error("SERVICE | Kullanıcı bulunamadı");
     }
 
+    const today = new Date();
+    const todayKey = today.toISOString().slice(0, 10);
+
     const userData = userDocSnap.data();
     const taskHistory = userData.taskHistory || {};
-
     const todayTasks = taskHistory[todayKey] || [];
-    return todayTasks;
+
+    // Tüm taskTemplate'leri çek
+    const templatesColRef = collection(db, `users/${userId}/taskTemplates`);
+    const templatesSnapShot = await getDocs(templatesColRef);
+    const taskTemplates = templatesSnapShot.empty
+      ? []
+      : templatesSnapShot.docs.map((doc) => doc.data());
+
+    // isRecurring olanları filtrele
+    const recurringTemplates = taskTemplates.filter(
+      (template) => template.isRecurring
+    );
+
+    // todayTasks ve recurringTemplates birleştir
+    const mergedTasks = [...todayTasks, ...recurringTemplates];
+
+    // Firestore'u güncelle
+    taskHistory[todayKey] = mergedTasks;
+    await updateDoc(userDocRef, { taskHistory });
+
+    return mergedTasks;
   } catch (err) {
     throw new Error(
       `SERVICE | Bugünün görevlerini çekerken sorun: ${err.message}`
