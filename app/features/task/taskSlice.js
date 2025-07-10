@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addNewTaskTemplateThunk, getTaskTemplatesThunk } from "./taskThunk";
+import {
+  addNewTaskTemplateThunk,
+  getTaskTemplatesThunk,
+  useTemplateThunk,
+  getTodayTasksThunk,
+} from "./taskThunk";
 
 const initialState = {
   taskTemplates: [],
   taskHistory: {},
+  todayTasks: [],
   isLoading: false,
   error: null,
 };
@@ -14,6 +20,8 @@ const taskSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+
+      // TEMPLATE---------------------------------------------------
 
       // addNewTaskTemplateThunk
       .addCase(addNewTaskTemplateThunk.pending, (state) => {
@@ -28,10 +36,9 @@ const taskSlice = createSlice({
       .addCase(addNewTaskTemplateThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
 
-    // getTaskTemplatesThunk
-    builder
+      // getTaskTemplatesThunk
       .addCase(getTaskTemplatesThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -42,6 +49,43 @@ const taskSlice = createSlice({
         state.error = null;
       })
       .addCase(getTaskTemplatesThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // useTemplateThunk
+      .addCase(useTemplateThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(useTemplateThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // taskHistory'yi güncelle
+        const { todayKey, todaysTasks } = action.payload;
+        state.taskHistory = {
+          ...state.taskHistory,
+          [todayKey]: todaysTasks,
+        };
+        state.error = null;
+      })
+      .addCase(useTemplateThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // TEMPLATE---------------------------------------------------
+
+      // getTodayTasksThunk
+      .addCase(getTodayTasksThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getTodayTasksThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.todayTasks = action.payload;
+        state.error = null;
+      })
+      .addCase(getTodayTasksThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

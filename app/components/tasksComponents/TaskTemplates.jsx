@@ -41,7 +41,7 @@ const TaskTemplates = ({ userId }) => {
         taskTemplates.length > 0 && (
           <div className="w-full flex flex-wrap items-center justify-evenly">
             {taskTemplates.map((task) => (
-              <TemplateItem key={task.id} task={task} />
+              <TemplateItem key={task.id} task={task} userId={userId} />
             ))}
           </div>
         )

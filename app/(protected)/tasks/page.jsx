@@ -6,7 +6,7 @@ import { BadgePlus } from "lucide-react";
 import SelectTaskModal from "../../components/tasksComponents/SelectTaskModal";
 import { useSelector } from "react-redux";
 import TaskTemplates from "../../components/tasksComponents/TaskTemplates";
-import TaskHistory from "../../components/tasksComponents/TaskHistory";
+import TodayTasks from "../../components/tasksComponents/TodayTasks";
 
 const Tasks = () => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
@@ -52,7 +52,7 @@ const Tasks = () => {
       {user?.uid && taskTemplatesShow && <TaskTemplates userId={user.uid} />}
 
       {/* Task History*/}
-      {user?.uid && taskHistoryShow && <TaskHistory userId={user.uid} />}
+      {user?.uid && <TodayTasks userId={user.uid} />}
 
       {/* Yeni Görev Modalı */}
       {showNewTaskModal && (

@@ -1,6 +1,14 @@
 import { db } from "../../lib/firebase";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 
+//TEMPLATE---------------------------------------------------
 export const addNewTaskTemplateService = async (userId, newTask) => {
   try {
     if (!userId) {
@@ -75,6 +83,68 @@ export const getTaskTemplatesService = async (userId) => {
   } catch (err) {
     throw new Error(
       `SERVICE |  Task template'leri getirirken sorun: ${err.message}`
+    );
+  }
+};
+
+export const useTemplateService = async (userId, template) => {
+  try {
+    if (!userId || !template) {
+      throw new Error("SERVICE | Kullanıcı ID veya template eksik");
+    }
+
+    const today = new Date();
+    const todayKey = today.toISOString().slice(0, 10);
+
+    const userDocRef = doc(db, `users/${userId}`);
+    const userDocSnap = await getDoc(userDocRef);
+    if (!userDocSnap.exists()) {
+      throw new Error(
+        `SERVICE | Template'i taskHistory'ye eklerken sorun: Kullanıcı Bulunamadı`
+      );
+    }
+
+    const userData = userDocSnap.data();
+    const taskHistory = userData.taskHistory || {};
+
+    const todaysTasks = taskHistory[todayKey] || [];
+    todaysTasks.push(template);
+
+    taskHistory[todayKey] = todaysTasks;
+
+    await updateDoc(userDocRef, { taskHistory });
+    return { todayKey: todayKey, todaysTasks: todaysTasks };
+  } catch (err) {
+    throw new Error(
+      `SERVICE | Template'i taskHistory'ye eklerken sorun: ${err.message}`
+    );
+  }
+};
+
+//TASK---------------------------------------------------
+export const getTodayTasksService = async (userId) => {
+  try {
+    if (!userId) {
+      throw new Error("SERVICE | Kullanıcı ID eksik");
+    }
+
+    const today = new Date();
+    const todayKey = today.toISOString().slice(0, 10);
+
+    const userDocRef = doc(db, `users/${userId}`);
+    const userDocSnap = await getDoc(userDocRef);
+    if (!userDocSnap.exists()) {
+      throw new Error("SERVICE | Kullanıcı bulunamadı");
+    }
+
+    const userData = userDocSnap.data();
+    const taskHistory = userData.taskHistory || {};
+
+    const todayTasks = taskHistory[todayKey] || [];
+    return todayTasks;
+  } catch (err) {
+    throw new Error(
+      `SERVICE | Bugünün görevlerini çekerken sorun: ${err.message}`
     );
   }
 };
