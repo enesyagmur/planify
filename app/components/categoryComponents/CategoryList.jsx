@@ -22,13 +22,13 @@ const CategoryList = ({ userId }) => {
   }, [userId, dispatch]); // categoryState dependency'sini kaldırdık
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-6 px-2">
+    <div className="w-full h-full  mx-auto mt-6 px-2">
       {categoryState.categories?.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400 py-8">
           Henüz bir kategori yok.
         </div>
       ) : (
-        <div className="w-11/12 flex flex-wrap items-center justify-evenly">
+        <div className="w-full flex flex-wrap items-center justify-evenly">
           {categories?.map((cat) => (
             <CategoryItem key={cat.id} category={cat} />
           ))}

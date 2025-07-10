@@ -1,15 +1,32 @@
 import React from "react";
-import { Check, MoreVertical, Clock, Plus, Edit, Trash2 } from "lucide-react";
+import { Check, Clock } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { taskCompleteThunk } from "../../features/task/taskThunk";
 
-const TaskItem = ({ task, onUpdate, onDelete }) => {
-  // Kategori rengi task.category.color = "bg-blue-500" şeklinde bir yapıda
+const TaskItem = ({ task, userId }) => {
+  const dispatch = useDispatch();
+  const handleComplete = async () => {
+    try {
+      if (task.completed) {
+        return;
+      }
+      if (!task.id || !userId) {
+        throw new Error("TASKITEM | Görev tamamlanırken sorun: Bilgiler eksik");
+      }
+
+      const data = { userId, taskId: task.id };
+      await dispatch(taskCompleteThunk(data)).unwrap();
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
 
   return (
     <div
       className={`
-        relative flex flex-col gap-3 bg-gray-900 dark:bg-gray-800 rounded-lg shadow-md p-5 mb-4 border border-gray-800
+        relative flex flex-col gap-3 bg-neutral-800  rounded-lg shadow-md p-5 mb-4 border border-neutral-800
         transition-all duration-300 hover:shadow-xl hover:border-purple-600/60 group
-        ${task.completed ? "opacity-60" : "hover:bg-gray-800/80"}
+        ${task.completed ? "opacity-60" : "hover:bg-neutral-800/80"}
       `}
       aria-label={`Görev: ${task.name}`}
     >
@@ -28,7 +45,7 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
               focus:outline-none focus:ring-2 focus:ring-purple-500
             `}
             aria-label={task.completed ? "Tamamlandı" : "Devam Ediyor"}
-            // onClick ile tamamlandı toggle işlemi eklenebilir
+            onClick={handleComplete}
           >
             {task.completed && (
               <Check size={16} className="text-white" strokeWidth={3} />
@@ -44,23 +61,6 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
           >
             {task.name}
           </h3>
-        </div>
-        {/* Hover'da görünen aksiyonlar */}
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
-          <button
-            onClick={() => onUpdate && onUpdate(task)}
-            className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-purple-600 hover:text-white transition focus:outline-none focus:ring-2 focus:ring-purple-500"
-            aria-label="Görevi güncelle"
-          >
-            <Edit size={16} />
-          </button>
-          <button
-            onClick={() => onDelete && onDelete(task)}
-            className="p-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition focus:outline-none focus:ring-2 focus:ring-red-500"
-            aria-label="Görevi sil"
-          >
-            <Trash2 size={16} />
-          </button>
         </div>
       </div>
 

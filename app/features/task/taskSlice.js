@@ -4,6 +4,7 @@ import {
   getTaskTemplatesThunk,
   useTemplateThunk,
   getTodayTasksThunk,
+  taskCompleteThunk,
 } from "./taskThunk";
 
 const initialState = {
@@ -73,7 +74,7 @@ const taskSlice = createSlice({
         state.error = action.payload;
       })
 
-      // TEMPLATE---------------------------------------------------
+      // TASK---------------------------------------------------
 
       // getTodayTasksThunk
       .addCase(getTodayTasksThunk.pending, (state) => {
@@ -86,6 +87,22 @@ const taskSlice = createSlice({
         state.error = null;
       })
       .addCase(getTodayTasksThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // GÖREV TAMAMLAMA (taskCompleteThunk)
+      .addCase(taskCompleteThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(taskCompleteThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // todayTasks'ı güncelle
+        state.todayTasks = action.payload;
+        state.error = null;
+      })
+      .addCase(taskCompleteThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

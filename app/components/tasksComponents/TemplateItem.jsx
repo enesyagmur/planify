@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { useTemplateThunk } from "../../features/task/taskThunk";
 
 const TemplateItem = ({ task, userId }) => {
-  const borderColor = task.category?.color || "border-purple-500";
-  const categoryBgColor = task.category?.bgColor || "bg-purple-900/20";
+  const categoryBgColor = task.category?.color || "bg-purple-900/20";
   const dispatch = useDispatch();
 
   const handleSelect = async (task) => {
@@ -44,22 +43,16 @@ const TemplateItem = ({ task, userId }) => {
     >
       {/* Sol taraftaki mor çizgi */}
       <div
-        className={`absolute left-0 top-4 bottom-4 w-1 ${borderColor.replace(
-          "border-",
-          "bg-"
-        )} rounded-full`}
+        className={`absolute left-0 top-4 bottom-4 w-1 ${categoryBgColor} rounded-full`}
       ></div>
 
       {/* Kategori badge */}
       {task.category?.name && (
         <div
-          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 w-fit ${categoryBgColor} border ${borderColor}`}
+          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 w-fit  border `}
         >
           <div
-            className={`w-2 h-2 rounded-full mr-2 ${borderColor.replace(
-              "border-",
-              "bg-"
-            )}`}
+            className={`w-2 h-2 rounded-full mr-2  ${categoryBgColor}`}
           ></div>
           <span className="text-purple-200 capitalize">
             {task.category.name}
@@ -69,7 +62,7 @@ const TemplateItem = ({ task, userId }) => {
 
       <div className="flex-1 ml-2">
         <h3
-          className={`text-xl font-bold mb-2 transition-colors duration-200 ${
+          className={`text-xl capitalize font-bold mb-2 transition-colors duration-200 ${
             task.completed
               ? "line-through text-gray-500"
               : "text-white group-hover:text-purple-100"
@@ -79,7 +72,7 @@ const TemplateItem = ({ task, userId }) => {
         </h3>
 
         {/* Süre bilgisi */}
-        {task.duration && (
+        {task.duration !== 0 && (
           <div className="flex items-center mb-4">
             <div className="flex items-center text-gray-400 text-sm">
               <svg

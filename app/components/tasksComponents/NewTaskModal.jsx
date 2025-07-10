@@ -24,8 +24,6 @@ const NewTaskModal = ({ onClose, userId }) => {
     }
   }, [categories]);
 
-  console.log(formState);
-
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -42,6 +40,7 @@ const NewTaskModal = ({ onClose, userId }) => {
 
       const data = { userId: userId, newTask: newTask };
       await dispatch(addNewTaskTemplateThunk(data)).unwrap();
+      onClose();
     } catch (err) {
       throw new Error(err);
     }
@@ -99,6 +98,30 @@ const NewTaskModal = ({ onClose, userId }) => {
               dispatchForm({
                 type: "SET_FIELD",
                 field: "name",
+                value: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        {/* Görev İsmi */}
+        <div className="mb-5">
+          <label
+            className="block text-gray-300 font-medium mb-1"
+            htmlFor="description"
+          >
+            Açıklama <span className="text-purple-500">*</span>
+          </label>
+          <input
+            id="description"
+            type="text"
+            className="w-full px-3 py-2 capitalize rounded-lg border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 transition"
+            placeholder="Açıklama giriniz"
+            value={formState.description}
+            onChange={(e) =>
+              dispatchForm({
+                type: "SET_FIELD",
+                field: "description",
                 value: e.target.value,
               })
             }
@@ -231,7 +254,7 @@ const NewTaskModal = ({ onClose, userId }) => {
         </div>
 
         {/* Tamamlandı mı? */}
-        <div className="mb-8 flex items-center gap-2">
+        {/* <div className="mb-8 flex items-center gap-2">
           <input
             id="completed"
             type="checkbox"
@@ -248,7 +271,7 @@ const NewTaskModal = ({ onClose, userId }) => {
           <label htmlFor="completed" className="text-gray-200 ">
             Tamamlandı
           </label>
-        </div>
+        </div> */}
 
         {/* Kaydet Butonu (pasif) */}
         <button

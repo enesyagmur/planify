@@ -148,3 +148,53 @@ export const getTodayTasksService = async (userId) => {
     );
   }
 };
+
+export const taskCompleteService = async (userId, taskId) => {
+  try {
+    if (!userId || !taskId) {
+      throw new Error(`SERVICE | Görev tamamlanırken sorun: Bilgiler eksik`);
+    }
+    const userDocRef = doc(db, `users/${userId}`);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      throw new Error("SERVICE | Kullanıcı bulunamadı");
+    }
+
+    const today = new Date();
+    const todayKey = today.toISOString().slice(0, 10);
+
+    const userData = userDocSnap.data();
+    const taskHistory = userData.taskHistory || {};
+    const todayTasks = taskHistory[todayKey] || [];
+
+    const updatedTasks = todayTasks.map((task) => {
+      if (task.id !== taskId) return task;
+      // Eğer görev zaten tamamlandıysa tekrar tamamlanamaz
+      if (task.completed) {
+        throw new Error("Bu görev zaten tamamlandı ve tekrar değiştirilemez.");
+      }
+      // Tamamlanmamışsa, tamamlandı olarak işaretle ve streak güncelle
+      let currentStreak = task.currentStreak || 0;
+      let streakRecord = task.streakRecord || 0;
+      currentStreak += 1;
+      streakRecord = Math.max(streakRecord, currentStreak);
+
+      return {
+        ...task,
+        completed: true,
+        currentStreak,
+        streakRecord,
+        wasStreakKept: true,
+        updatedAt: new Date().toISOString(),
+      };
+    });
+
+    taskHistory[todayKey] = updatedTasks;
+    await updateDoc(userDocRef, { taskHistory });
+
+    return updatedTasks;
+  } catch (err) {
+    throw new Error(`SERVICE | Görev tamamlanırken sorun: ${err.message}`);
+  }
+};

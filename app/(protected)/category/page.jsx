@@ -9,7 +9,7 @@ const Category = () => {
   const { user, loading } = useSelector((state) => state.authState);
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-2 py-8">
+    <div className="w-11/12 mx-auto px-2 py-8">
       {/* Başlık ve Yeni Kategori Butonu */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">

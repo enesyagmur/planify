@@ -1,5 +1,6 @@
 export const initialTaskState = {
   name: "",
+  description: "",
   categoryId: "",
   completionType: "",
   duration: 0,

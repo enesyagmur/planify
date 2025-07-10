@@ -43,8 +43,8 @@ const CategoryItem = ({ category }) => {
             {category.name}
           </span>
           {/* Alt bilgi - isteğe bağlı */}
-          <span className="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Kategori
+          <span className="text-gray-400 text-sm opacity-70 capitalize group-hover:opacity-100 transition-opacity duration-300">
+            {category.description}
           </span>
         </div>
       </div>

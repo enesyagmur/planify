@@ -52,7 +52,7 @@ const Tasks = () => {
       {user?.uid && taskTemplatesShow && <TaskTemplates userId={user.uid} />}
 
       {/* Task History*/}
-      {user?.uid && <TodayTasks userId={user.uid} />}
+      {user?.uid && !taskTemplatesShow && <TodayTasks userId={user.uid} />}
 
       {/* Yeni Görev Modalı */}
       {showNewTaskModal && (

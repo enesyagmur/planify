@@ -20,6 +20,7 @@ const colors = [
 const NewCategoryModal = ({ onClose, userId }) => {
   const [category, setCategory] = useState({
     name: "",
+    description: "",
     color: "bg-purple-700",
   });
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const NewCategoryModal = ({ onClose, userId }) => {
 
       const result = await dispatch(addNewCategoryThunk(data)).unwrap();
       if (result) {
-        onClose;
+        onClose();
       }
     } catch (err) {
       throw new Error(err);
@@ -84,6 +85,25 @@ const NewCategoryModal = ({ onClose, userId }) => {
             value={category.name}
             onChange={(e) =>
               setCategory((prev) => ({ ...prev, name: e.target.value }))
+            }
+          />
+        </div>
+
+        <div className="mb-5">
+          <label
+            className="block text-gray-300 font-medium mb-1"
+            htmlFor="description"
+          >
+            Açıklama
+          </label>
+          <input
+            id="description"
+            type="text"
+            className={`w-full px-3 py-2 capitalize rounded-lg border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:border-purple-700 transition`}
+            placeholder="Açıklama giriniz"
+            value={category.description}
+            onChange={(e) =>
+              setCategory((prev) => ({ ...prev, description: e.target.value }))
             }
           />
         </div>

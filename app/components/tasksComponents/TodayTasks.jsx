@@ -13,9 +13,7 @@ const TodayTasks = ({ userId }) => {
     const fetchTodayTasks = async () => {
       try {
         if (!userId) {
-          throw new Error(
-            "TODAYTASKS | Taskları çekerken sorun: user Id eksik"
-          );
+          throw new Error("TODAYTASK | Taskları çekerken sorun: user Id eksik");
         }
         await dispatch(getTodayTasksThunk(userId)).unwrap();
       } catch (err) {
@@ -33,7 +31,7 @@ const TodayTasks = ({ userId }) => {
     todayTasks?.filter((task) => !task.completed && !task.isCompleted) || [];
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-6 px-2">
+    <div className="w-full  mx-auto mt-6 px-2">
       {isLoading ? (
         <div className="text-center text-gray-400 py-8">Yükleniyor...</div>
       ) : error ? (
@@ -43,10 +41,10 @@ const TodayTasks = ({ userId }) => {
           Henüz bir görev yok.
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="w-full h-[500px] py-2 flex flex-col lg:flex-row items-center justify-between ">
           {/* Yapılmayan Görevler */}
           {incompleteTasks.length > 0 && (
-            <div className="w-6/12 bg-gray-900 rounded-lg p-6 border border-gray-700">
+            <div className="w-6/12 h-full overflow-y-auto bg-neutral-900 rounded-lg p-6 border border-neutral-700">
               <div className="flex items-center mb-4">
                 <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
                 <h2 className="text-xl font-semibold text-white">Devam Eden</h2>
@@ -56,7 +54,7 @@ const TodayTasks = ({ userId }) => {
               </div>
               <div className="space-y-3">
                 {incompleteTasks.map((task) => (
-                  <TaskItem key={task.id} task={task} />
+                  <TaskItem key={task.id} task={task} userId={userId} />
                 ))}
               </div>
             </div>
@@ -64,7 +62,7 @@ const TodayTasks = ({ userId }) => {
 
           {/* Yapılan Görevler */}
           {completedTasks.length > 0 && (
-            <div className="w-6/12 bg-gray-900 rounded-lg p-6 border border-gray-700">
+            <div className="w-6/12 h-full overflow-y-auto bg-neutral-900 rounded-lg p-6 border border-neutral-700">
               <div className="flex items-center mb-4">
                 <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
                 <h2 className="text-xl font-semibold text-white">Tamamlanan</h2>

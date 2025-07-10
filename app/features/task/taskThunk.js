@@ -3,6 +3,7 @@ import {
   addNewTaskTemplateService,
   getTaskTemplatesService,
   getTodayTasksService,
+  taskCompleteService,
   useTemplateService,
 } from "./taskService";
 
@@ -49,6 +50,18 @@ export const getTodayTasksThunk = createAsyncThunk(
   async (userId, thunkAPI) => {
     try {
       const result = await getTodayTasksService(userId);
+      return result;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+export const taskCompleteThunk = createAsyncThunk(
+  "task/taskComplete",
+  async ({ userId, taskId }, thunkAPI) => {
+    try {
+      const result = await taskCompleteService(userId, taskId);
       return result;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);

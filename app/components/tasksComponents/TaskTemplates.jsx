@@ -39,7 +39,7 @@ const TaskTemplates = ({ userId }) => {
       ) : (
         Array.isArray(taskTemplates) &&
         taskTemplates.length > 0 && (
-          <div className="w-full flex flex-wrap items-center justify-evenly">
+          <div className="w-full h-[500px] py-2 flex flex-wrap items-center justify-evenly overflow-y-auto">
             {taskTemplates.map((task) => (
               <TemplateItem key={task.id} task={task} userId={userId} />
             ))}

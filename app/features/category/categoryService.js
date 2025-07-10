@@ -16,8 +16,7 @@ export const createNewCategoryService = async (userId, category) => {
     const docRef = doc(categoryColRef); // otomatik id oluşturur
     const newCol = {
       id: docRef.id,
-      name: category.name,
-      color: category.color,
+      ...category,
       createdAt: new Date().toISOString(),
     };
     await setDoc(docRef, newCol);

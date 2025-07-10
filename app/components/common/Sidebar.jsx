@@ -10,8 +10,9 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  LayoutDashboard,
 } from "lucide-react";
+import { Target } from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -48,9 +49,9 @@ const Sidebar = () => {
     >
       {/* Logo */}
       <div className="flex items-center gap-2 h-16 px-4 border-b border-gray-800">
-        <LayoutDashboard className="w-7 h-7 text-purple-500" />
+        <Target className="w-7 h-7 text-purple-500" />
         {!collapsed && (
-          <span className="text-xl font-bold text-purple-500 transition-all">
+          <span className="text-xl font-bold text-white transition-all">
             Planify
           </span>
         )}
@@ -77,7 +78,7 @@ const Sidebar = () => {
               >
                 <span
                   className={`w-6 h-6 ${
-                    isActive ? "text-white" : "text-purple-400"
+                    isActive ? "text-white" : "text-gray-300"
                   }`}
                 >
                   {item.icon}
@@ -93,11 +94,11 @@ const Sidebar = () => {
           href="/auth"
           className={`
             flex items-center gap-3 px-4 py-2 mx-2 mt-4 rounded-lg
-            text-purple-400 hover:bg-purple-500/30 hover:text-purple-300
+             hover:bg-purple-500/30 
             transition font-medium
           `}
         >
-          <span className="w-6 h-6">
+          <span className="w-6 h-6 text-gray-300">
             <LogOut />
           </span>
           {!collapsed && <span className="text-white">Çıkış</span>}
