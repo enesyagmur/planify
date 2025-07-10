@@ -24,7 +24,9 @@ const TaskItem = ({ task, userId }) => {
   return (
     <div
       className={`
-      relative flex flex-col gap-3 bg-neutral-800  rounded-lg shadow-md p-5 mb-4 border border-neutral-800
+      relative flex flex-col gap-3 ${
+        task.category.color
+      } rounded-lg shadow-md bg-opacity-10 p-5 mb-4 border border-neutral-800
       transition-all duration-300 hover:shadow-xl hover:border-purple-600/60 group
       ${task.completed ? "opacity-60" : "hover:bg-neutral-800/80"}
     `}
@@ -36,7 +38,7 @@ const TaskItem = ({ task, userId }) => {
           {/* Checkbox */}
           <button
             className={`
-            w-6 h-6 flex items-center justify-center rounded-full border-2 transition-all duration-200
+            w-6 h-6 flex items-center hover:bg-green-500 justify-center rounded-full border-2 transition-all duration-200
             ${
               task.completed
                 ? "bg-green-500 border-green-500"
@@ -73,11 +75,6 @@ const TaskItem = ({ task, userId }) => {
         {/* Kategori */}
         {task.category?.name && (
           <div className="flex items-center gap-1">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                task.category.color || "bg-purple-500"
-              }`}
-            ></span>
             <span className="text-sm text-gray-400 dark:text-gray-300">
               {task.category.name}
             </span>
@@ -120,7 +117,7 @@ const TaskItem = ({ task, userId }) => {
           ${
             task.completed
               ? "bg-green-500/20 text-green-400 border border-green-500/30"
-              : "bg-purple-600/20 text-purple-400 border border-purple-500/30 dark:bg-purple-500/20"
+              : "text-purple-400 border border-purple-500/30 "
           }
         `}
         >

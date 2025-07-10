@@ -143,8 +143,14 @@ export const getTodayTasksService = async (userId) => {
       throw new Error("SERVICE | Kullanıcı bulunamadı");
     }
 
+    // Yerel saat dilimine göre todayKey oluştur
     const today = new Date();
-    const todayKey = today.toISOString().slice(0, 10);
+    const todayKey =
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0");
 
     const userData = userDocSnap.data();
     const taskHistory = userData.taskHistory || {};

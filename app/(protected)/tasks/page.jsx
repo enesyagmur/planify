@@ -31,9 +31,9 @@ const Tasks = () => {
         <div className="w-6/12 h-full flex items-center justify-end">
           <button
             onClick={() => setTaskTemplatesShow(true)}
-            className={`flex items-center gap-2 px-4 py-2 mr-2 rounded-lg border-2 border-purple-300 hover:bg-purple-700 ${
-              taskTemplatesShow && "bg-purple-600"
-            }  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400`}
+            className={`flex items-center gap-2 px-4 py-2 mr-2 rounded-lg border-2 border-purple-950 hover:bg-purple-700 ${
+              taskTemplatesShow && "bg-purple-600 text-white"
+            }   font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400`}
           >
             <span className="text-lg">
               <LayoutList />
@@ -42,7 +42,7 @@ const Tasks = () => {
           </button>
           <button
             onClick={() => setShowNewTemplateModal(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-purple-300 hover:bg-purple-700  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-purple-950 hover:bg-purple-700  text-white font-semibold shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-400`}
           >
             <span className="text-lg">
               <BadgePlus />
