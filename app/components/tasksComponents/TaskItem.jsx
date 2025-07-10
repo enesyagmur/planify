@@ -1,91 +1,107 @@
 import React from "react";
+import { Check, MoreVertical, Clock, Plus, Edit, Trash2 } from "lucide-react";
 
-const TaskItem = ({ task, onSelect, onDelete, onUpdate }) => {
-  // Kategori rengi veya varsayılan renk
-  const borderColor = task.category?.color || "border-gray-700";
+const TaskItem = ({ task, onUpdate, onDelete }) => {
+  // Kategori rengi task.category.color = "bg-blue-500" şeklinde bir yapıda
 
   return (
     <div
       className={`
-        relative flex flex-col bg-gray-800 rounded-lg shadow-md p-6 mb-6 border-l-4 ${borderColor}
-        transition hover:shadow-xl group
+        relative flex flex-col gap-3 bg-gray-900 dark:bg-gray-800 rounded-lg shadow-md p-5 mb-4 border border-gray-800
+        transition-all duration-300 hover:shadow-xl hover:border-purple-600/60 group
+        ${task.completed ? "opacity-60" : "hover:bg-gray-800/80"}
       `}
       aria-label={`Görev: ${task.name}`}
     >
-      {/* Sağ üstte üç nokta menüsü */}
-      <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button
-          className="p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600 transition"
-          aria-label="Daha fazla seçenek"
-          tabIndex={0}
-        >
-          <svg
-            width="20"
-            height="20"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="text-gray-400 group-hover:text-purple-500 transition"
+      {/* Üst kısım: Başlık ve Checkbox */}
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-3 min-w-0">
+          {/* Checkbox */}
+          <button
+            className={`
+              w-6 h-6 flex items-center justify-center rounded-full border-2 transition-all duration-200
+              ${
+                task.completed
+                  ? "bg-green-500 border-green-500"
+                  : "border-purple-500 hover:border-purple-400 bg-gray-900"
+              }
+              focus:outline-none focus:ring-2 focus:ring-purple-500
+            `}
+            aria-label={task.completed ? "Tamamlandı" : "Devam Ediyor"}
+            // onClick ile tamamlandı toggle işlemi eklenebilir
           >
-            <circle cx="12" cy="5" r="1.5" />
-            <circle cx="12" cy="12" r="1.5" />
-            <circle cx="12" cy="19" r="1.5" />
-          </svg>
-        </button>
+            {task.completed && (
+              <Check size={16} className="text-white" strokeWidth={3} />
+            )}
+          </button>
+          {/* Başlık */}
+          <h3
+            className={`text-lg capitalize font-semibold truncate transition-all duration-200 ${
+              task.completed
+                ? "line-through text-gray-500"
+                : "text-white group-hover:text-purple-100"
+            }`}
+          >
+            {task.name}
+          </h3>
+        </div>
+        {/* Hover'da görünen aksiyonlar */}
+        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
+          <button
+            onClick={() => onUpdate && onUpdate(task)}
+            className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-purple-600 hover:text-white transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+            aria-label="Görevi güncelle"
+          >
+            <Edit size={16} />
+          </button>
+          <button
+            onClick={() => onDelete && onDelete(task)}
+            className="p-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition focus:outline-none focus:ring-2 focus:ring-red-500"
+            aria-label="Görevi sil"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
       </div>
-      <div className="flex-1">
-        <h3
-          className={`text-lg font-semibold mb-1 ${
-            task.completed
-              ? "line-through capitalize text-gray-500 dark:text-gray-600"
-              : "text-white"
-          }`}
-        >
-          {task.name}
-        </h3>
-        <p className="text-sm text-gray-400 mb-2">
-          {task.category?.name && (
-            <span className="mr-2">Kategori: {task.category.name}</span>
-          )}
-          {task.duration && <span>Süre: {task.duration} dk</span>}
-        </p>
-      </div>
-      <div className="flex items-center mt-3 gap-2 flex-wrap">
+
+      {/* Alt bilgiler ve badge */}
+      <div className="flex flex-wrap items-center gap-4 mt-1 capitalize">
+        {/* Kategori */}
+        {task.category?.name && (
+          <div className="flex items-center gap-1">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                task.category.color || "bg-purple-500"
+              }`}
+            ></span>
+            <span className="text-sm text-gray-400 dark:text-gray-300">
+              {task.category.name}
+            </span>
+          </div>
+        )}
+        {/* Süre */}
+        {task.duration && (
+          <div className="flex items-center gap-1">
+            <Clock size={14} className="text-gray-500" />
+            <span className="text-sm text-gray-400 dark:text-gray-300">
+              {task.duration} dk
+            </span>
+          </div>
+        )}
+        {/* Durum badge'i */}
         <span
           className={`
-            px-3 py-1 rounded-full text-xs font-medium
+            px-3 py-1 rounded-full text-xs font-medium ml-auto
+            transition-all duration-200 shadow-sm
             ${
               task.completed
-                ? "bg-purple-600/20 text-purple-400 border border-purple-600"
-                : "bg-gray-800 text-gray-300 border border-gray-700"
+                ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                : "bg-purple-600/20 text-purple-400 border border-purple-500/30 dark:bg-purple-500/20"
             }
-            transition
           `}
         >
           {task.completed ? "Tamamlandı" : "Devam Ediyor"}
         </span>
-        {/* Butonlar */}
-        <button
-          onClick={() => onSelect && onSelect(task)}
-          className="ml-2 px-3 py-1 rounded-lg text-xs font-medium bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition focus:outline-none focus:ring-2 focus:ring-purple-600"
-          aria-label="Görevi seç"
-        >
-          Seç
-        </button>
-        <button
-          onClick={() => onUpdate && onUpdate(task)}
-          className="px-3 py-1 rounded-lg text-xs font-medium bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white dark:bg-gray-600 dark:hover:bg-purple-600 transition focus:outline-none focus:ring-2 focus:ring-purple-600"
-          aria-label="Görevi güncelle"
-        >
-          Güncelle
-        </button>
-        <button
-          onClick={() => onDelete && onDelete(task)}
-          className="px-3 py-1 rounded-lg text-xs font-medium bg-red-600 text-white hover:bg-red-700 transition focus:outline-none focus:ring-2 focus:ring-red-600"
-          aria-label="Görevi sil"
-        >
-          Sil
-        </button>
       </div>
     </div>
   );

@@ -26,25 +26,59 @@ const TodayTasks = ({ userId }) => {
     fetchTodayTasks();
   }, []);
 
+  // Görevleri tamamlanma durumuna göre ayır
+  const completedTasks =
+    todayTasks?.filter((task) => task.completed || task.isCompleted) || [];
+  const incompleteTasks =
+    todayTasks?.filter((task) => !task.completed && !task.isCompleted) || [];
+
   return (
-    <div className="w-full max-w-2xl mx-auto mt-6 px-2">
+    <div className="w-full max-w-4xl mx-auto mt-6 px-2">
       {isLoading ? (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-          Yükleniyor...
-        </div>
+        <div className="text-center text-gray-400 py-8">Yükleniyor...</div>
       ) : error ? (
-        <div className="text-center text-red-500 dark:text-red-400 py-8">
-          {error}
-        </div>
+        <div className="text-center text-red-400 py-8">{error}</div>
       ) : todayTasks?.length === 0 ? (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+        <div className="text-center text-gray-400 py-8">
           Henüz bir görev yok.
         </div>
       ) : (
-        <div>
-          {todayTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
-          ))}
+        <div className="space-y-6">
+          {/* Yapılmayan Görevler */}
+          {incompleteTasks.length > 0 && (
+            <div className="w-6/12 bg-gray-900 rounded-lg p-6 border border-gray-700">
+              <div className="flex items-center mb-4">
+                <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                <h2 className="text-xl font-semibold text-white">Devam Eden</h2>
+                <span className="ml-2 bg-purple-600 text-white px-2 py-1 rounded-full text-sm">
+                  {incompleteTasks.length}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {incompleteTasks.map((task) => (
+                  <TaskItem key={task.id} task={task} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Yapılan Görevler */}
+          {completedTasks.length > 0 && (
+            <div className="w-6/12 bg-gray-900 rounded-lg p-6 border border-gray-700">
+              <div className="flex items-center mb-4">
+                <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                <h2 className="text-xl font-semibold text-white">Tamamlanan</h2>
+                <span className="ml-2 bg-green-600 text-white px-2 py-1 rounded-full text-sm">
+                  {completedTasks.length}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {completedTasks.map((task) => (
+                  <TaskItem key={task.id} task={task} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
