@@ -110,11 +110,32 @@ export const useTemplateService = async (userId, template) => {
 
     const todaysTasks = taskHistory[todayKey] || [];
 
-    // Template'i task'a dönüştür
+    // Template'i task'a dönüştür (streak alanları hariç)
+    const {
+      category,
+      completed,
+      completionType,
+      createdAt,
+      description,
+      duration,
+      isRecurring,
+      name,
+      updatedAt,
+    } = template;
+
+    // Yeni task objesi (streak ile ilgili alanlar hariç)
     const newTask = {
-      ...template,
-      templateId: template.id, // template'in orijinal id'si
+      category,
+      completed,
+      completionType,
+      createdAt,
+      description,
+      duration,
       id: uuidv4(), // yeni task id
+      isRecurring,
+      name,
+      updatedAt,
+      templateId: template.id, // template'in orijinal id'si
     };
 
     todaysTasks.push(newTask);
@@ -158,6 +179,10 @@ export const getTodayTasksService = async (userId) => {
 
     // todayTasks içindeki id'leri al
     const todayTaskIds = new Set(todayTasks.map((task) => task.id));
+    // todayTasks içindeki templateId'leri al
+    const todayTaskTemplateIds = new Set(
+      todayTasks.map((task) => task.templateId)
+    );
 
     // Tüm taskTemplate'leri çek
     const templatesColRef = collection(db, `users/${userId}/taskTemplates`);
@@ -166,10 +191,39 @@ export const getTodayTasksService = async (userId) => {
       ? []
       : templatesSnapShot.docs.map((doc) => doc.data());
 
-    // isRecurring olanları ve todayTasks'ta olmayanları filtrele
-    const newRecurringTemplates = taskTemplates.filter(
-      (template) => template.isRecurring && !todayTaskIds.has(template.id)
-    );
+    // isRecurring olanları ve todayTasks'ta aynı templateId ile olmayanları filtrele
+    const newRecurringTemplates = taskTemplates
+      .filter(
+        (template) =>
+          template.isRecurring && !todayTaskTemplateIds.has(template.id)
+      )
+      .map((template) => {
+        // Sadece gerekli alanları al, streak ile ilgili alanları hariç tut
+        const {
+          category,
+          completed,
+          completionType,
+          createdAt,
+          description,
+          duration,
+          isRecurring,
+          name,
+          updatedAt,
+        } = template;
+        return {
+          category,
+          completed,
+          completionType,
+          createdAt,
+          description,
+          duration,
+          id: uuidv4(), // yeni unique id
+          isRecurring,
+          name,
+          updatedAt,
+          templateId: template.id, // orijinal template id
+        };
+      });
 
     // Sadece eksik olanları ekle
     const mergedTasks = [...todayTasks, ...newRecurringTemplates];
@@ -186,9 +240,9 @@ export const getTodayTasksService = async (userId) => {
   }
 };
 
-export const taskCompleteService = async (userId, taskId) => {
+export const taskCompleteService = async (userId, taskId, templateId) => {
   try {
-    if (!userId || !taskId) {
+    if (!userId || !taskId || !templateId) {
       throw new Error(`SERVICE | Görev tamamlanırken sorun: Bilgiler eksik`);
     }
     const userDocRef = doc(db, `users/${userId}`);
@@ -205,30 +259,45 @@ export const taskCompleteService = async (userId, taskId) => {
     const taskHistory = userData.taskHistory || {};
     const todayTasks = taskHistory[todayKey] || [];
 
+    // Sadece ilgili task'ın completed'ını güncelle
     const updatedTasks = todayTasks.map((task) => {
       if (task.id !== taskId) return task;
-      // Eğer görev zaten tamamlandıysa tekrar tamamlanamaz
       if (task.completed) {
         throw new Error("Bu görev zaten tamamlandı ve tekrar değiştirilemez.");
       }
-      // Tamamlanmamışsa, tamamlandı olarak işaretle ve streak güncelle
-      let currentStreak = task.currentStreak || 0;
-      let streakRecord = task.streakRecord || 0;
-      currentStreak += 1;
-      streakRecord = Math.max(streakRecord, currentStreak);
-
       return {
         ...task,
         completed: true,
-        currentStreak,
-        streakRecord,
-        wasStreakKept: true,
         updatedAt: new Date().toISOString(),
       };
     });
 
     taskHistory[todayKey] = updatedTasks;
     await updateDoc(userDocRef, { taskHistory });
+
+    // Template streak güncellemesi
+    const templateDocRef = doc(
+      db,
+      `users/${userId}/taskTemplates/${templateId}`
+    );
+    const templateDocSnap = await getDoc(templateDocRef);
+
+    if (!templateDocSnap.exists()) {
+      throw new Error("SERVICE | İlgili template bulunamadı");
+    }
+
+    const templateData = templateDocSnap.data();
+    let currentStreak = templateData.currentStreak || 0;
+    let streakRecord = templateData.streakRecord || 0;
+    currentStreak += 1;
+    streakRecord = Math.max(streakRecord, currentStreak);
+
+    await updateDoc(templateDocRef, {
+      currentStreak,
+      streakRecord,
+      wasStreakKept: true,
+      updatedAt: new Date().toISOString(),
+    });
 
     return updatedTasks;
   } catch (err) {

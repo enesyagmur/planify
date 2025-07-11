@@ -59,9 +59,9 @@ export const getTodayTasksThunk = createAsyncThunk(
 
 export const taskCompleteThunk = createAsyncThunk(
   "task/taskComplete",
-  async ({ userId, taskId }, thunkAPI) => {
+  async ({ userId, taskId, templateId }, thunkAPI) => {
     try {
-      const result = await taskCompleteService(userId, taskId);
+      const result = await taskCompleteService(userId, taskId, templateId);
       return result;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
